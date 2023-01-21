@@ -1,7 +1,6 @@
 package game
 
 import (
-	"fmt"
 	"math"
 )
 
@@ -50,7 +49,7 @@ func (s Stage) String() string {
 	for i := 0; i < w; i++ {
 		for j := 0; j < w; j++ {
 			tile := s.Tiles[Pos{X: i, Y: j}]
-			result = result + fmt.Sprintf("%s", tile)
+			result = result + tile.String()
 		}
 		result = result + "\n"
 	}

@@ -2,11 +2,11 @@
 .DEFAULT_GOAL := help
 
 DOCKER_TAG := latest
-build: ## デプロイ用のイメージをビルドする
+build: ## Build image for deploy
 	docker build -t kijimad/sokoban:${DOCKER_TAG} \
 	--target deploy ./
 
-build-local: ## ローカル開発用のイメージをビルドする
+build-local: ## Build image for local development
 	docker-compose build --no-cache
 
 up: ## Do docker compose up
@@ -21,9 +21,12 @@ logs: ## Tail docker compose logs
 ps: ## Check container status
 	docker-compose ps
 
-test: ## テストを実行する
+lint: ## Run lint
+	docker run --rm -v ${PWD}:/app -w /app golangci/golangci-lint:v1.50.1 golangci-lint run -v
+
+test: ## Run test
 	go test -race -shuffle=on -v ./...
 
-help: ## ヘルプを表示する
+help: ## Show help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
 		awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'

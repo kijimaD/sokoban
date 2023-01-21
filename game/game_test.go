@@ -41,7 +41,6 @@ func InitStage() Stage {
 
 func TestInit(t *testing.T) {
 	s := InitStage()
-	s.String()
 	s.ToSlice()
 }
 

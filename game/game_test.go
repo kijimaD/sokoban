@@ -19,7 +19,7 @@ func InitStage() Stage {
 		Pos{X: 1, Y: 1}: Tile{Kind: 0},
 	}
 	player := Entity{
-		Pos{
+		&Pos{
 			X: 0,
 			Y: 0,
 		},
@@ -63,4 +63,18 @@ func TestToSlice(t *testing.T) {
 	}
 
 	assert.Equal(t, expect, s.ToSlice())
+}
+
+func TestPlayerMove(t *testing.T) {
+	s := InitStage()
+
+	assert.Equal(t, &Pos{X: 0, Y: 0}, s.Player.Pos)
+	s.Player.Right()
+	assert.Equal(t, &Pos{X: 1, Y: 0}, s.Player.Pos)
+	s.Player.Left()
+	assert.Equal(t, &Pos{X: 0, Y: 0}, s.Player.Pos)
+	s.Player.Down()
+	assert.Equal(t, &Pos{X: 0, Y: 1}, s.Player.Pos)
+	s.Player.Up()
+	assert.Equal(t, &Pos{X: 0, Y: 0}, s.Player.Pos)
 }

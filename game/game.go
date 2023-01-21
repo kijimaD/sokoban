@@ -73,7 +73,24 @@ func (s Stage) ToSlice() [][]Tile {
 
 // タイルの上にあるもの。プレイヤーや荷物など、移動する
 type Entity struct {
-	Pos Pos
+	Pos *Pos
+}
+
+func (e *Entity) moveRelative(xOffset int, yOffset int) {
+	e.Pos.X = e.Pos.X + xOffset
+	e.Pos.Y = e.Pos.Y + yOffset
+}
+func (e *Entity) Left() {
+	e.moveRelative(-1, 0)
+}
+func (e *Entity) Right() {
+	e.moveRelative(1, 0)
+}
+func (e *Entity) Down() {
+	e.moveRelative(0, 1)
+}
+func (e *Entity) Up() {
+	e.moveRelative(0, -1)
 }
 
 // マップ上の座標

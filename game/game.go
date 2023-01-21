@@ -29,19 +29,9 @@ func (t Tile) String() string {
 // 一覧表示できる
 // 二次元配列に変換すればよさげ。[0][1]に代入、みたいにして変換できる。
 type Stage struct {
-	Tiles  map[Pos]Tile
-	Player Entity
-}
-
-// タイルの上にあるもの。プレイヤーや荷物など、移動する
-type Entity struct {
-	Pos Pos
-}
-
-// マップ上の座標
-type Pos struct {
-	X int
-	Y int
+	Tiles    map[Pos]Tile
+	Player   Entity
+	Entities map[Pos]Entity
 }
 
 func (s Stage) String() string {
@@ -81,23 +71,13 @@ func (s Stage) ToSlice() [][]Tile {
 	return arr
 }
 
-func InitStage() Stage {
-	tiles := map[Pos]Tile{
-		Pos{X: 0, Y: 0}: Tile{Kind: 1},
-		Pos{X: 0, Y: 1}: Tile{Kind: 0},
-		Pos{X: 1, Y: 0}: Tile{Kind: 1},
-		Pos{X: 1, Y: 1}: Tile{Kind: 0},
-	}
-	player := Entity{
-		Pos{
-			X: 0,
-			Y: 0,
-		},
-	}
+// タイルの上にあるもの。プレイヤーや荷物など、移動する
+type Entity struct {
+	Pos Pos
+}
 
-	stage := Stage{
-		Tiles:  tiles,
-		Player: player,
-	}
-	return stage
+// マップ上の座標
+type Pos struct {
+	X int
+	Y int
 }

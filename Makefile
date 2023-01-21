@@ -22,7 +22,7 @@ ps: ## Check container status
 	docker-compose ps
 
 test: ## テストを実行する
-	go test -race -shuffle=on ./...
+	go test -race -shuffle=on -v ./...
 
 help: ## ヘルプを表示する
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \

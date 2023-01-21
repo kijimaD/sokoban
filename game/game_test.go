@@ -46,8 +46,8 @@ func TestInit(t *testing.T) {
 }
 
 func TestTileString(t *testing.T) {
-	assert.Equal(t, WALL, Tile{Kind: 0}.String())
-	assert.Equal(t, FLOOR, Tile{Kind: 1}.String())
+	assert.Equal(t, WallChar, Tile{Kind: 0}.String())
+	assert.Equal(t, FloorChar, Tile{Kind: 1}.String())
 }
 
 func TestStageString(t *testing.T) {

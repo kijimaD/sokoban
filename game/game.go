@@ -7,19 +7,26 @@ import (
 
 // タイル
 type Tile struct {
-	Kind int
+	Kind TileKind
 }
 
+type TileKind int
+
 const (
-	WALL  = `#`
-	FLOOR = `.`
+	Wall TileKind = iota
+	Floor
+)
+
+const (
+	WallChar  = `#`
+	FloorChar = `.`
 )
 
 func (t Tile) String() string {
-	if t.Kind == 0 {
-		return WALL
-	} else if t.Kind == 1 {
-		return FLOOR
+	if t.Kind == Wall {
+		return WallChar
+	} else if t.Kind == Floor {
+		return FloorChar
 	} else {
 		return "?"
 	}

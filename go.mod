@@ -1,3 +1,3 @@
-module github.com/kijimaD/go_skel
+module github.com/kijimaD/sokoban
 
 go 1.19

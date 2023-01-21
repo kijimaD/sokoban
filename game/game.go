@@ -40,8 +40,8 @@ func (s Stage) String() string {
 	l := len(s.Tiles)
 	w := int(math.Sqrt(float64(l)))
 
-	for i := 0; i-1 < w; i++ {
-		for j := 0; j-1 < w; j++ {
+	for i := 0; i < w; i++ {
+		for j := 0; j < w; j++ {
 			tile := s.Tiles[Pos{X: i, Y: j}]
 			result = result + fmt.Sprintf("%s", tile)
 		}

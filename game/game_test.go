@@ -14,9 +14,14 @@ import (
 func InitStage() Stage {
 	tiles := map[Pos]Tile{
 		Pos{X: 0, Y: 0}: Tile{Kind: 1},
-		Pos{X: 0, Y: 1}: Tile{Kind: 0},
+		Pos{X: 0, Y: 1}: Tile{Kind: 1},
+		Pos{X: 0, Y: 2}: Tile{Kind: 0},
 		Pos{X: 1, Y: 0}: Tile{Kind: 1},
-		Pos{X: 1, Y: 1}: Tile{Kind: 0},
+		Pos{X: 1, Y: 1}: Tile{Kind: 1},
+		Pos{X: 1, Y: 2}: Tile{Kind: 0},
+		Pos{X: 2, Y: 0}: Tile{Kind: 1},
+		Pos{X: 2, Y: 1}: Tile{Kind: 1},
+		Pos{X: 2, Y: 2}: Tile{Kind: 1},
 	}
 	player := Entity{
 		&Pos{
@@ -47,9 +52,9 @@ func TestTileString(t *testing.T) {
 
 func TestStageString(t *testing.T) {
 	s := InitStage()
-	expect := `.##
-.##
-###
+	expect := `..#
+..#
+...
 `
 	assert.Equal(t, expect, s.String())
 }
@@ -58,8 +63,9 @@ func TestToSlice(t *testing.T) {
 	s := InitStage()
 
 	expect := [][]Tile{
-		{Tile{Kind: 1}, Tile{Kind: 0}},
-		{Tile{Kind: 1}, Tile{Kind: 0}},
+		{Tile{Kind: 1}, Tile{Kind: 1}, Tile{Kind: 0}},
+		{Tile{Kind: 1}, Tile{Kind: 1}, Tile{Kind: 0}},
+		{Tile{Kind: 1}, Tile{Kind: 1}, Tile{Kind: 1}},
 	}
 
 	assert.Equal(t, expect, s.ToSlice())

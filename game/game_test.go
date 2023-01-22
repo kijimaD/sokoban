@@ -42,7 +42,7 @@ func InitStage() Stage {
 		&stage,
 		Cargo,
 	}
-	stage.Entities[*cargo.Pos] = &cargo
+	stage.Entities = append(stage.Entities, cargo)
 
 	goal := Entity{
 		&Pos{
@@ -52,7 +52,7 @@ func InitStage() Stage {
 		&stage,
 		Goal,
 	}
-	stage.Entities[*goal.Pos] = &goal
+	stage.Entities = append(stage.Entities, goal)
 
 	player := Entity{
 		&Pos{
@@ -62,7 +62,7 @@ func InitStage() Stage {
 		&stage,
 		Player,
 	}
-	stage.Entities[*player.Pos] = &player
+	stage.Entities = append(stage.Entities, player)
 
 	return stage
 }
@@ -140,6 +140,21 @@ func TestPlayerMove(t *testing.T) {
 	assert.Equal(t, &Pos{X: 2, Y: 0}, player.Pos) // 移動先のタイルがない場合
 }
 
+// 移動したあとに残らないのを検証する
+func TestPlayerUnique(t *testing.T) {
+	s := InitStage()
+
+	player := s.Entities.Player()
+	player.Right()
+
+	expect := `.@.#
+.&.#
+#_.#
+....
+`
+	assert.Equal(t, expect, s.String())
+}
+
 func TestCollision(t *testing.T) {
 	s := InitStage()
 
@@ -152,4 +167,21 @@ func TestCollision(t *testing.T) {
 	player.Right()
 	player.Down()
 	assert.Equal(t, true, player.isCollision())
+}
+
+func TestGetEntityByPos(t *testing.T) {
+	s := InitStage()
+
+	_, e := s.Entities.GetEntityByPos(Pos{X: 0, Y: 0})
+	assert.Equal(t, Player, e.Kind)
+	assert.Equal(t, e.Pos.X, 0)
+	assert.Equal(t, e.Pos.Y, 0)
+
+	_, e = s.Entities.GetEntityByPos(Pos{X: 1, Y: 1})
+	assert.Equal(t, e.Pos.X, 1)
+	assert.Equal(t, e.Pos.Y, 1)
+	assert.Equal(t, Cargo, e.Kind)
+
+	ok, e := s.Entities.GetEntityByPos(Pos{X: 0, Y: 1})
+	assert.Equal(t, false, ok)
 }

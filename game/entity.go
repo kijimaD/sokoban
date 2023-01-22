@@ -112,19 +112,33 @@ func (e *Entity) currentTile() Tile {
 
 // Entity同士(片方Player)が重なった状態である
 func (e *Entity) isCollision() bool {
-	targetE := e.Stage.Entities[*e.Pos]
+	_, targetE := e.Stage.Entities.GetEntityByPos(*e.Pos)
 	return targetE.Kind != Player
 }
 
-type Entities map[Pos]*Entity
+type Entities []Entity
 
 func (es Entities) Player() *Entity {
 	var result *Entity
 	for _, val := range es {
 		if val.Kind == Player {
-			result = val
+			result = &val
 		}
 	}
 
 	return result
+}
+
+func (es Entities) GetEntityByPos(p Pos) (bool, *Entity) {
+	var result *Entity
+	var success bool
+	for _, e := range es {
+		if e.Pos.X == p.X && e.Pos.Y == p.Y {
+			result = &e
+			success = true
+			break
+		}
+	}
+
+	return success, result
 }

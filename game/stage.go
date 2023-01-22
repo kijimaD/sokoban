@@ -1,6 +1,8 @@
 package game
 
-import "math"
+import (
+	"math"
+)
 
 // (x, y)の形でアクセスできる
 // 一覧表示できる
@@ -20,10 +22,8 @@ func (s Stage) String() string {
 		for j := 0; j < w; j++ {
 			char := ""
 			tile := s.Tiles[Pos{X: j, Y: i}]
-			if s.Entities.Player().Pos.X == j && s.Entities.Player().Pos.Y == i {
-				char = PlayerChar
-			} else if v, ok := s.Entities[Pos{X: j, Y: i}]; ok {
-				char = v.String()
+			if ok, e := s.Entities.GetEntityByPos(Pos{X: j, Y: i}); ok {
+				char = e.String()
 			} else {
 				char = tile.String()
 			}

@@ -7,8 +7,7 @@ import "math"
 // 二次元配列に変換すればよさげ。[0][1]に代入、みたいにして変換できる。
 type Stage struct {
 	Tiles    map[Pos]Tile
-	Player   Entity
-	Entities map[Pos]Entity
+	Entities Entities
 }
 
 func (s Stage) String() string {
@@ -21,7 +20,7 @@ func (s Stage) String() string {
 		for j := 0; j < w; j++ {
 			char := ""
 			tile := s.Tiles[Pos{X: j, Y: i}]
-			if s.Player.Pos.X == j && s.Player.Pos.Y == i {
+			if s.Entities.Player().Pos.X == j && s.Entities.Player().Pos.Y == i {
 				char = PlayerChar
 			} else if v, ok := s.Entities[Pos{X: j, Y: i}]; ok {
 				char = v.String()

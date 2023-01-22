@@ -97,4 +97,23 @@ func (e *Entity) currentTile() Tile {
 	return e.Stage.Tiles[*e.Pos]
 }
 
-func (e *Entity) OnCollision() {}
+// func (e *Entity) OnCollisionEntity() Entity {
+// 	return e.Stage.Entities[*e.Pos]
+// }
+
+// func (e *Entity) isCollision() {
+// 	e.Stage.Entities[*e.Pos]
+// }
+
+type Entities map[Pos]Entity
+
+func (es Entities) Player() Entity {
+	var result Entity
+	for _, val := range es {
+		if val.Kind == Player {
+			result = val
+		}
+	}
+
+	return result
+}

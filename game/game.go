@@ -13,10 +13,8 @@ const (
 )
 
 const (
-	PlayerChar = `@`
-	WallChar   = `#`
-	FloorChar  = `.`
-	CargoChar  = `&`
+	WallChar  = `#`
+	FloorChar = `.`
 )
 
 type Direction int

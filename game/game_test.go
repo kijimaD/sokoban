@@ -43,6 +43,14 @@ func InitStage() Stage {
 			&stage,
 			Cargo,
 		},
+		{
+			&Pos{
+				X: 1,
+				Y: 2,
+			},
+			&stage,
+			Goal,
+		},
 	}
 	for _, e := range entities {
 		stage.Entities[*e.Pos] = e
@@ -77,7 +85,7 @@ func TestStageString(t *testing.T) {
 
 	expect := `@..#
 .&.#
-#..#
+#_.#
 ....
 `
 	assert.Equal(t, expect, s.String())
@@ -100,7 +108,7 @@ func TestPlayerMove(t *testing.T) {
 	s := InitStage()
 	// @..#
 	// .&.#
-	// #..#
+	// #_.#
 	// ....
 
 	player := s.Entities.Player()

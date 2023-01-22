@@ -5,6 +5,13 @@ type EntityKind int
 const (
 	Player EntityKind = iota
 	Cargo
+	Goal
+)
+
+const (
+	PlayerChar = `@`
+	CargoChar  = `&`
+	GoalChar   = `_`
 )
 
 // タイルの上にあるもの。プレイヤーや荷物など、移動する
@@ -21,6 +28,8 @@ func (e *Entity) String() string {
 		str = PlayerChar
 	case Cargo:
 		str = CargoChar
+	case Goal:
+		str = GoalChar
 	}
 	return str
 }

@@ -20,6 +20,7 @@ const (
 	PlayerChar = `@`
 	WallChar   = `#`
 	FloorChar  = `.`
+	CargoChar  = `&`
 )
 
 type Direction int
@@ -62,6 +63,8 @@ func (s Stage) String() string {
 			tile := s.Tiles[Pos{X: j, Y: i}]
 			if s.Player.Pos.X == j && s.Player.Pos.Y == i {
 				char = PlayerChar
+			} else if v, ok := s.Entities[Pos{X: j, Y: i}]; ok {
+				char = v.String()
 			} else {
 				char = tile.String()
 			}
@@ -95,10 +98,29 @@ func (s Stage) ToSlice() [][]Tile {
 
 // 衝突を判定するには、移動主体のオブジェクトが他のオブジェクトやタイルの情報を知っている必要がある?
 
+type EntityKind int
+
+const (
+	Player EntityKind = iota
+	Cargo
+)
+
 // タイルの上にあるもの。プレイヤーや荷物など、移動する
 type Entity struct {
 	Pos   *Pos
 	Stage *Stage
+	Kind  EntityKind
+}
+
+func (e *Entity) String() string {
+	var str string
+	switch e.Kind {
+	case Player:
+		str = PlayerChar
+	case Cargo:
+		str = CargoChar
+	}
+	return str
 }
 
 func (e *Entity) Left() {

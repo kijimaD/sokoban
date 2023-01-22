@@ -1,7 +1,6 @@
 package game
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -35,15 +34,30 @@ func InitStage() Stage {
 			Y: 0,
 		},
 		nil,
+		Player,
 	}
-	entities := map[Pos]Entity{}
 
 	stage := Stage{
 		Tiles:    tiles,
 		Player:   player,
-		Entities: entities,
+		Entities: map[Pos]Entity{},
 	}
 	stage.Player.Stage = &stage
+
+	entities := []Entity{
+		{
+			&Pos{
+				X: 1,
+				Y: 1,
+			},
+			&stage,
+			Cargo,
+		},
+	}
+	for _, e := range entities {
+		stage.Entities[*e.Pos] = e
+	}
+
 	return stage
 }
 
@@ -59,10 +73,9 @@ func TestTileString(t *testing.T) {
 
 func TestStageString(t *testing.T) {
 	s := InitStage()
-	fmt.Println(s)
 
 	expect := `@..#
-...#
+.&.#
 #..#
 ....
 `
@@ -85,7 +98,7 @@ func TestToSlice(t *testing.T) {
 func TestPlayerMove(t *testing.T) {
 	s := InitStage()
 	// @..#
-	// ...#
+	// .&.#
 	// #..#
 	// ....
 

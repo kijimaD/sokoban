@@ -116,10 +116,10 @@ func (e *Entity) isCollision() bool {
 	return targetE.Kind != Player
 }
 
-type Entities map[Pos]Entity
+type Entities map[Pos]*Entity
 
-func (es Entities) Player() Entity {
-	var result Entity
+func (es Entities) Player() *Entity {
+	var result *Entity
 	for _, val := range es {
 		if val.Kind == Player {
 			result = val

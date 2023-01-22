@@ -34,27 +34,25 @@ func InitStage() Stage {
 		Entities: Entities{},
 	}
 
-	entities := []Entity{
-		{
-			&Pos{
-				X: 1,
-				Y: 1,
-			},
-			&stage,
-			Cargo,
+	cargo := Entity{
+		&Pos{
+			X: 1,
+			Y: 1,
 		},
-		{
-			&Pos{
-				X: 1,
-				Y: 2,
-			},
-			&stage,
-			Goal,
+		&stage,
+		Cargo,
+	}
+	stage.Entities[*cargo.Pos] = &cargo
+
+	goal := Entity{
+		&Pos{
+			X: 1,
+			Y: 2,
 		},
+		&stage,
+		Goal,
 	}
-	for _, e := range entities {
-		stage.Entities[*e.Pos] = e
-	}
+	stage.Entities[*goal.Pos] = &goal
 
 	player := Entity{
 		&Pos{
@@ -64,8 +62,7 @@ func InitStage() Stage {
 		&stage,
 		Player,
 	}
-
-	stage.Entities[*player.Pos] = player
+	stage.Entities[*player.Pos] = &player
 
 	return stage
 }

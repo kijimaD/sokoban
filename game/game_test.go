@@ -6,21 +6,16 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// ....
-// ....
-// ..@.
-// ....
-
 func InitStage() Stage {
 	tiles := map[Pos]Tile{
 		Pos{X: 0, Y: 0}: Tile{Kind: 1},
-		Pos{X: 0, Y: 1}: Tile{Kind: 1},
-		Pos{X: 0, Y: 2}: Tile{Kind: 0},
 		Pos{X: 1, Y: 0}: Tile{Kind: 1},
-		Pos{X: 1, Y: 1}: Tile{Kind: 1},
-		Pos{X: 1, Y: 2}: Tile{Kind: 0},
 		Pos{X: 2, Y: 0}: Tile{Kind: 1},
+		Pos{X: 0, Y: 1}: Tile{Kind: 1},
+		Pos{X: 1, Y: 1}: Tile{Kind: 1},
 		Pos{X: 2, Y: 1}: Tile{Kind: 1},
+		Pos{X: 0, Y: 2}: Tile{Kind: 0},
+		Pos{X: 1, Y: 2}: Tile{Kind: 0},
 		Pos{X: 2, Y: 2}: Tile{Kind: 1},
 	}
 	player := Entity{
@@ -28,6 +23,7 @@ func InitStage() Stage {
 			X: 0,
 			Y: 0,
 		},
+		nil,
 	}
 	entities := map[Pos]Entity{}
 
@@ -36,6 +32,7 @@ func InitStage() Stage {
 		Player:   player,
 		Entities: entities,
 	}
+	stage.Player.Stage = &stage
 	return stage
 }
 
@@ -51,9 +48,9 @@ func TestTileString(t *testing.T) {
 
 func TestStageString(t *testing.T) {
 	s := InitStage()
-	expect := `..#
-..#
+	expect := `@..
 ...
+##.
 `
 	assert.Equal(t, expect, s.String())
 }
@@ -72,7 +69,11 @@ func TestToSlice(t *testing.T) {
 
 func TestPlayerMove(t *testing.T) {
 	s := InitStage()
+	// @..
+	// ...
+	// ##.
 
+	// 通常移動
 	assert.Equal(t, &Pos{X: 0, Y: 0}, s.Player.Pos)
 	s.Player.Right()
 	assert.Equal(t, &Pos{X: 1, Y: 0}, s.Player.Pos)
@@ -82,4 +83,21 @@ func TestPlayerMove(t *testing.T) {
 	assert.Equal(t, &Pos{X: 0, Y: 1}, s.Player.Pos)
 	s.Player.Up()
 	assert.Equal(t, &Pos{X: 0, Y: 0}, s.Player.Pos)
+
+	// 移動不可を検証
+	assert.Equal(t, &Pos{X: 0, Y: 0}, s.Player.Pos)
+	s.Player.Down()
+	s.Player.Down()
+	s.Player.Down()
+	assert.Equal(t, &Pos{X: 0, Y: 1}, s.Player.Pos) // 移動先が壁タイルの場合
+	s.Player.Left()
+	assert.Equal(t, &Pos{X: 0, Y: 1}, s.Player.Pos) // 移動先のタイルがない場合
+	s.Player.Up()
+	s.Player.Up()
+	s.Player.Up()
+	assert.Equal(t, &Pos{X: 0, Y: 0}, s.Player.Pos) // 移動先のタイルがない場合
+	s.Player.Right()
+	s.Player.Right()
+	s.Player.Right()
+	assert.Equal(t, &Pos{X: 2, Y: 0}, s.Player.Pos) // 移動先のタイルがない場合
 }

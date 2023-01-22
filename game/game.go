@@ -22,10 +22,10 @@ const (
 type Direction int
 
 const (
-	Right Direction = iota
-	Left
-	Up
-	Down
+	RightD Direction = iota
+	LeftD
+	UpD
+	DownD
 )
 
 func (t Tile) String() string {

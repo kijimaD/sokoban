@@ -26,25 +26,25 @@ func (e *Entity) String() string {
 }
 
 func (e *Entity) Left() {
-	if e.canMove(Left) {
+	if e.canMove(LeftD) {
 		e.left()
 	}
 }
 
 func (e *Entity) Right() {
-	if e.canMove(Right) {
+	if e.canMove(RightD) {
 		e.right()
 	}
 }
 
 func (e *Entity) Up() {
-	if e.canMove(Up) {
+	if e.canMove(UpD) {
 		e.up()
 	}
 }
 
 func (e *Entity) Down() {
-	if e.canMove(Down) {
+	if e.canMove(DownD) {
 		e.down()
 	}
 }
@@ -73,19 +73,19 @@ func (e *Entity) moveRelative(xOffset int, yOffset int) {
 func (e Entity) canMove(d Direction) bool {
 	var can bool
 	switch d {
-	case Left:
+	case LeftD:
 		e.left()
 		can = e.currentTile().Kind == Floor
 		e.right()
-	case Right:
+	case RightD:
 		e.right()
 		can = e.currentTile().Kind == Floor
 		e.left()
-	case Down:
+	case DownD:
 		e.down()
 		can = e.currentTile().Kind == Floor
 		e.up()
-	case Up:
+	case UpD:
 		e.up()
 		can = e.currentTile().Kind == Floor
 		e.down()

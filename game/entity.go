@@ -110,9 +110,14 @@ func (e *Entity) currentTile() Tile {
 // 	return e.Stage.Entities[*e.Pos]
 // }
 
-// func (e *Entity) isCollision() {
-// 	e.Stage.Entities[*e.Pos]
-// }
+// Entity同士(片方Player)が重なった状態である
+func (e *Entity) isCollision() bool {
+	targetE := e.Stage.Entities[*e.Pos]
+	if targetE.Kind != Player {
+		return true
+	}
+	return false
+}
 
 type Entities map[Pos]Entity
 

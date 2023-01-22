@@ -142,3 +142,17 @@ func TestPlayerMove(t *testing.T) {
 	player.Right()
 	assert.Equal(t, &Pos{X: 2, Y: 0}, player.Pos) // 移動先のタイルがない場合
 }
+
+func TestCollision(t *testing.T) {
+	s := InitStage()
+
+	// @..#
+	// .&.#
+	// #_.#
+	// ....
+
+	player := s.Entities.Player()
+	player.Right()
+	player.Down()
+	assert.Equal(t, true, player.isCollision())
+}

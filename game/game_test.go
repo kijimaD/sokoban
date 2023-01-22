@@ -1,6 +1,7 @@
 package game
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -11,12 +12,22 @@ func InitStage() Stage {
 		Pos{X: 0, Y: 0}: Tile{Kind: 1},
 		Pos{X: 1, Y: 0}: Tile{Kind: 1},
 		Pos{X: 2, Y: 0}: Tile{Kind: 1},
+		Pos{X: 3, Y: 0}: Tile{Kind: 0},
+
 		Pos{X: 0, Y: 1}: Tile{Kind: 1},
 		Pos{X: 1, Y: 1}: Tile{Kind: 1},
 		Pos{X: 2, Y: 1}: Tile{Kind: 1},
+		Pos{X: 3, Y: 1}: Tile{Kind: 0},
+
 		Pos{X: 0, Y: 2}: Tile{Kind: 0},
-		Pos{X: 1, Y: 2}: Tile{Kind: 0},
+		Pos{X: 1, Y: 2}: Tile{Kind: 1},
 		Pos{X: 2, Y: 2}: Tile{Kind: 1},
+		Pos{X: 3, Y: 2}: Tile{Kind: 0},
+
+		Pos{X: 0, Y: 3}: Tile{Kind: 1},
+		Pos{X: 1, Y: 3}: Tile{Kind: 1},
+		Pos{X: 2, Y: 3}: Tile{Kind: 1},
+		Pos{X: 3, Y: 3}: Tile{Kind: 1},
 	}
 	player := Entity{
 		&Pos{
@@ -48,9 +59,12 @@ func TestTileString(t *testing.T) {
 
 func TestStageString(t *testing.T) {
 	s := InitStage()
-	expect := `@..
-...
-##.
+	fmt.Println(s)
+
+	expect := `@..#
+...#
+#..#
+....
 `
 	assert.Equal(t, expect, s.String())
 }
@@ -59,9 +73,10 @@ func TestToSlice(t *testing.T) {
 	s := InitStage()
 
 	expect := [][]Tile{
-		{Tile{Kind: 1}, Tile{Kind: 1}, Tile{Kind: 0}},
-		{Tile{Kind: 1}, Tile{Kind: 1}, Tile{Kind: 0}},
-		{Tile{Kind: 1}, Tile{Kind: 1}, Tile{Kind: 1}},
+		{Tile{Kind: 1}, Tile{Kind: 1}, Tile{Kind: 0}, Tile{Kind: 1}},
+		{Tile{Kind: 1}, Tile{Kind: 1}, Tile{Kind: 1}, Tile{Kind: 1}},
+		{Tile{Kind: 1}, Tile{Kind: 1}, Tile{Kind: 1}, Tile{Kind: 1}},
+		{Tile{Kind: 0}, Tile{Kind: 0}, Tile{Kind: 0}, Tile{Kind: 1}},
 	}
 
 	assert.Equal(t, expect, s.ToSlice())
@@ -69,9 +84,10 @@ func TestToSlice(t *testing.T) {
 
 func TestPlayerMove(t *testing.T) {
 	s := InitStage()
-	// @..
-	// ...
-	// ##.
+	// @..#
+	// ...#
+	// #..#
+	// ....
 
 	// 通常移動
 	assert.Equal(t, &Pos{X: 0, Y: 0}, s.Player.Pos)
@@ -96,6 +112,7 @@ func TestPlayerMove(t *testing.T) {
 	s.Player.Up()
 	s.Player.Up()
 	assert.Equal(t, &Pos{X: 0, Y: 0}, s.Player.Pos) // 移動先のタイルがない場合
+	s.Player.Right()
 	s.Player.Right()
 	s.Player.Right()
 	s.Player.Right()

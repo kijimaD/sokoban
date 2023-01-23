@@ -1,3 +1,9 @@
 # sokoban
 
-Go template repository.
+Implement puzzle game "sokoban".
+
+show help
+
+```shell
+make
+```

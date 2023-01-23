@@ -254,6 +254,7 @@ func TestGetEntitiesByPos(t *testing.T) {
 func TestPush(t *testing.T) {
 	s := InitStage()
 
+	// 押せる
 	player := s.Entities.Player()
 	player.Right()
 	player.Down()
@@ -265,12 +266,21 @@ func TestPush(t *testing.T) {
 `
 	assert.Equal(t, expect, s.String())
 
-	// ヌルポ
-	// 	player.Down()
-	// 	expect = `...#
-	// ...#
-	// #@.#
-	// .&..
-	// `
-	// 	assert.Equal(t, expect, s.String())
+	// ゴールの上の荷物を押せる
+	player.Down()
+	expect = `...#
+...#
+#@.#
+.&..
+`
+	assert.Equal(t, expect, s.String())
+
+	// 押す先が壁だと移動できない
+	player.Down()
+	expect = `...#
+...#
+#@.#
+.&..
+`
+	assert.Equal(t, expect, s.String())
 }

@@ -99,6 +99,7 @@ func (e Entity) canMove(d Direction) bool {
 			for _, t := range targets {
 				if t.Kind == Cargo && t.canMove(DownD) {
 					t.Down()
+					break
 				} else {
 					canEntity = false
 				}

@@ -102,6 +102,35 @@ func TestToSlice(t *testing.T) {
 	assert.Equal(t, expect, s.ToSlice())
 }
 
+func TestPlayer(t *testing.T) {
+	s := InitStage()
+
+	player := s.Entities.Player()
+	assert.Equal(t, Player, player.Kind)
+}
+
+func TestNotPlayer(t *testing.T) {
+	s := InitStage()
+
+	notPlayer := s.Entities.NotPlayer()
+	assert.Equal(t, Cargo, notPlayer.Kind)
+}
+
+func TestCollisionEntity(t *testing.T) {
+	s := InitStage()
+
+	player := s.Entities.Player()
+	player.Right()
+	player.Down()
+	_, another := player.collisionEntity()
+	assert.NotEqual(t, Player, another.Kind)
+
+	// 重なってないとき
+	player.Left()
+	ok, _ := player.collisionEntity()
+	assert.Equal(t, false, ok)
+}
+
 func TestPlayerMove(t *testing.T) {
 	s := InitStage()
 	// @..#

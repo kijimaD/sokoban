@@ -106,6 +106,26 @@ func (e *Entity) currentTile() Tile {
 	return e.Stage.Tiles[*e.Pos]
 }
 
+// 同じ座標にいるもう1つのentityを取得する
+// 重なってないと失敗を返す
+func (e *Entity) collisionEntity() (bool, *Entity) {
+	var result *Entity
+	var ok bool
+
+	_, es := e.Stage.Entities.GetEntitiesByPos(*e.Pos)
+
+	if len(es) == 2 {
+		for _, ent := range es {
+			if *e != ent {
+				result = &ent
+				ok = true
+				break
+			}
+		}
+	}
+	return ok, result
+}
+
 // Entity同士が重なった状態である
 func (e *Entity) isCollision() bool {
 	var result bool
@@ -123,6 +143,18 @@ func (es Entities) Player() *Entity {
 	var result *Entity
 	for _, val := range es {
 		if val.Kind == Player {
+			result = &val
+			break
+		}
+	}
+
+	return result
+}
+
+func (es Entities) NotPlayer() *Entity {
+	var result *Entity
+	for _, val := range es {
+		if val.Kind != Player {
 			result = &val
 			break
 		}

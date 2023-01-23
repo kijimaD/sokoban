@@ -22,8 +22,8 @@ func (s Stage) String() string {
 		for j := 0; j < w; j++ {
 			char := ""
 			tile := s.Tiles[Pos{X: j, Y: i}]
-			if ok, e := s.Entities.GetEntityByPos(Pos{X: j, Y: i}); ok {
-				char = e.String()
+			if ok, es := s.Entities.GetEntitiesByPos(Pos{X: j, Y: i}); ok {
+				char = es[0].String() // todo
 			} else {
 				char = tile.String()
 			}

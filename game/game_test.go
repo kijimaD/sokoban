@@ -196,24 +196,24 @@ func TestCollision(t *testing.T) {
 }
 
 // 位置で正しくentityを探せていることを確認する
-func TestGetEntityByPos(t *testing.T) {
+func TestGetEntitiesByPos(t *testing.T) {
 	s := InitStage()
 
-	_, e := s.Entities.GetEntityByPos(Pos{X: 0, Y: 0})
-	assert.Equal(t, Player, e.Kind)
-	assert.Equal(t, e.Pos.X, 0)
-	assert.Equal(t, e.Pos.Y, 0)
+	_, es := s.Entities.GetEntitiesByPos(Pos{X: 0, Y: 0})
+	assert.Equal(t, Player, es[0].Kind)
+	assert.Equal(t, es[0].Pos.X, 0)
+	assert.Equal(t, es[0].Pos.Y, 0)
 
-	_, e = s.Entities.GetEntityByPos(Pos{X: 1, Y: 1})
-	assert.Equal(t, e.Pos.X, 1)
-	assert.Equal(t, e.Pos.Y, 1)
-	assert.Equal(t, Cargo, e.Kind)
+	_, es = s.Entities.GetEntitiesByPos(Pos{X: 1, Y: 1})
+	assert.Equal(t, es[0].Pos.X, 1)
+	assert.Equal(t, es[0].Pos.Y, 1)
+	assert.Equal(t, Cargo, es[0].Kind)
 
-	_, e = s.Entities.GetEntityByPos(Pos{X: 1, Y: 2})
-	assert.Equal(t, e.Pos.X, 1)
-	assert.Equal(t, e.Pos.Y, 2)
-	assert.Equal(t, Goal, e.Kind)
+	_, es = s.Entities.GetEntitiesByPos(Pos{X: 1, Y: 2})
+	assert.Equal(t, es[0].Pos.X, 1)
+	assert.Equal(t, es[0].Pos.Y, 2)
+	assert.Equal(t, Goal, es[0].Kind)
 
-	ok, _ := s.Entities.GetEntityByPos(Pos{X: 0, Y: 1})
+	ok, _ := s.Entities.GetEntitiesByPos(Pos{X: 0, Y: 1})
 	assert.Equal(t, false, ok)
 }

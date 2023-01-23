@@ -95,11 +95,13 @@ func (e Entity) canMove(d Direction) bool {
 		e.down()
 		canTile = e.currentTile().Kind == Floor
 		if e.Kind == Player && e.isCollision() {
-			_, target := e.collisionEntity()
-			if target.Kind == Cargo && target.canMove(DownD) {
-				target.Down()
-			} else {
-				canEntity = false
+			targets := e.collisionEntities()
+			for _, t := range targets {
+				if t.Kind == Cargo && t.canMove(DownD) {
+					t.Down()
+				} else {
+					canEntity = false
+				}
 			}
 		} else {
 			canEntity = true
@@ -119,22 +121,18 @@ func (e *Entity) currentTile() Tile {
 
 // 同じ座標にいるもう1つのentityを取得する
 // 重なってないと失敗を返す
-func (e *Entity) collisionEntity() (bool, *Entity) {
-	var result *Entity
-	var ok bool
+// 一時的な移動を含めて、最大で3つ重なる可能性がある。player, cargo, goal
+func (e *Entity) collisionEntities() Entities {
+	var result Entities
 
 	_, es := e.Stage.Entities.GetEntitiesByPos(*e.Pos)
 
-	if len(es) == 2 {
-		for _, ent := range es {
-			if *e != ent {
-				result = &ent
-				ok = true
-				break
-			}
+	for _, ent := range es {
+		if *e != ent {
+			result = append(result, ent)
 		}
 	}
-	return ok, result
+	return result
 }
 
 // Entity同士が重なった状態である

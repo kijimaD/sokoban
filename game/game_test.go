@@ -121,7 +121,7 @@ func TestNotPlayer(t *testing.T) {
 	assert.Equal(t, Cargo, notPlayer.Kind)
 }
 
-func TestCollisionEntity(t *testing.T) {
+func TestCollisionEntities(t *testing.T) {
 	s := InitStage()
 
 	player := s.Entities.Player()
@@ -130,13 +130,14 @@ func TestCollisionEntity(t *testing.T) {
 	player.Down()
 	player.Down()
 	player.Left()
-	_, another := player.collisionEntity()
-	assert.NotEqual(t, Player, another.Kind)
+	another := player.collisionEntities()
+	assert.Equal(t, 1, len(another))
+	assert.NotEqual(t, Player, another[0].Kind)
 
 	// 重なってないとき
 	player.Right()
-	ok, _ := player.collisionEntity()
-	assert.Equal(t, false, ok)
+	another = player.collisionEntities()
+	assert.Equal(t, 0, len(another))
 }
 
 func TestPlayerMove(t *testing.T) {

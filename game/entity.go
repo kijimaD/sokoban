@@ -79,6 +79,8 @@ func (e *Entity) moveRelative(xOffset int, yOffset int) {
 	e.Pos.Y = e.Pos.Y + yOffset
 }
 
+// FIXME: 重複がたくさんあるのをどうにかする
+// 方向別に微妙に違うので、DRYにする方法がわからない
 func (e Entity) canMove(d Direction) bool {
 	var canTile bool
 	canEntity := true
@@ -86,10 +88,38 @@ func (e Entity) canMove(d Direction) bool {
 	case LeftD:
 		e.left()
 		canTile = e.currentTile().Kind == Floor
+		if e.Kind == Player && e.isCollision() {
+			targets := e.collisionEntities()
+			for _, t := range targets {
+				if t.Kind == Cargo && t.canMove(LeftD) {
+					t.Left()
+					break
+				} else if t.Kind != Cargo {
+
+				} else {
+					canEntity = false
+				}
+			}
+		} else {
+			canEntity = true
+		}
 		e.right()
 	case RightD:
 		e.right()
 		canTile = e.currentTile().Kind == Floor
+		if e.Kind == Player && e.isCollision() {
+			targets := e.collisionEntities()
+			for _, t := range targets {
+				if t.Kind == Cargo && t.canMove(RightD) {
+					t.Right()
+					break
+				} else {
+					canEntity = false
+				}
+			}
+		} else {
+			canEntity = true
+		}
 		e.left()
 	case DownD:
 		e.down()
@@ -111,6 +141,19 @@ func (e Entity) canMove(d Direction) bool {
 	case UpD:
 		e.up()
 		canTile = e.currentTile().Kind == Floor
+		if e.Kind == Player && e.isCollision() {
+			targets := e.collisionEntities()
+			for _, t := range targets {
+				if t.Kind == Cargo && t.canMove(UpD) {
+					t.Up()
+					break
+				} else {
+					canEntity = false
+				}
+			}
+		} else {
+			canEntity = true
+		}
 		e.down()
 	}
 	return canTile && canEntity

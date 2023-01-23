@@ -206,11 +206,12 @@ func TestPlayerOver(t *testing.T) {
 	player.Right()
 	player.Right()
 	player.Down()
+	player.Down()
 	player.Left()
 
 	expect := `...#
-.@.#
-#_.#
+.&.#
+#@.#
 ....
 `
 	assert.Equal(t, expect, s.String())

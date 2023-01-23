@@ -191,8 +191,7 @@ func TestCollision(t *testing.T) {
 	player := s.Entities.Player()
 	player.Right()
 	player.Down()
-	// assert.Equal(t, true, player.isCollision())
-	// 壊れたので一旦コメントアウト
+	assert.Equal(t, true, player.isCollision())
 }
 
 // 位置で正しくentityを探せていることを確認する

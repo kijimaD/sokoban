@@ -106,15 +106,16 @@ func (e *Entity) currentTile() Tile {
 	return e.Stage.Tiles[*e.Pos]
 }
 
-// func (e *Entity) OnCollisionEntity() Entity {
-// 	return e.Stage.Entities[*e.Pos]
-// }
+// Entity同士が重なった状態である
+func (e *Entity) isCollision() bool {
+	var result bool
 
-// Entity同士(片方Player)が重なった状態である
-// func (e *Entity) isCollision() bool {
-// 	_, targetE := e.Stage.Entities.GetEntitiesByPos(*e.Pos)
-// 	return targetE.Kind != Player
-// }
+	ok, es := e.Stage.Entities.GetEntitiesByPos(*e.Pos)
+	if ok && len(es) > 1 {
+		result = true
+	}
+	return result
+}
 
 type Entities []Entity
 
@@ -130,9 +131,7 @@ func (es Entities) Player() *Entity {
 	return result
 }
 
-// 同じ座標に複数entityがあったときの挙動が怪しい
-// 現状: 配列の前に入っている方を優先する
-// todo: playerを優先する
+// 同じ座標にあるEntitiesを取得する
 func (es Entities) GetEntitiesByPos(p Pos) (bool, Entities) {
 	var result Entities
 	var success bool

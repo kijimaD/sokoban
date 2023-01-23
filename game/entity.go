@@ -80,26 +80,37 @@ func (e *Entity) moveRelative(xOffset int, yOffset int) {
 }
 
 func (e Entity) canMove(d Direction) bool {
-	var can bool
+	var canTile bool
+	canEntity := true
 	switch d {
 	case LeftD:
 		e.left()
-		can = e.currentTile().Kind == Floor
+		canTile = e.currentTile().Kind == Floor
 		e.right()
 	case RightD:
 		e.right()
-		can = e.currentTile().Kind == Floor
+		canTile = e.currentTile().Kind == Floor
 		e.left()
 	case DownD:
 		e.down()
-		can = e.currentTile().Kind == Floor
+		canTile = e.currentTile().Kind == Floor
+		if e.Kind == Player && e.isCollision() {
+			_, target := e.collisionEntity()
+			if target.Kind == Cargo && target.canMove(DownD) {
+				target.Down()
+			} else {
+				canEntity = false
+			}
+		} else {
+			canEntity = true
+		}
 		e.up()
 	case UpD:
 		e.up()
-		can = e.currentTile().Kind == Floor
+		canTile = e.currentTile().Kind == Floor
 		e.down()
 	}
-	return can
+	return canTile && canEntity
 }
 
 func (e *Entity) currentTile() Tile {

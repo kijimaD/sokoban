@@ -7,6 +7,11 @@ import (
 )
 
 func InitStage() Stage {
+	// @..#
+	// .&.#
+	// #_.#
+	// ....
+
 	tiles := map[Pos]Tile{
 		Pos{X: 0, Y: 0}: Tile{Kind: 1},
 		Pos{X: 1, Y: 0}: Tile{Kind: 1},
@@ -121,22 +126,21 @@ func TestCollisionEntity(t *testing.T) {
 
 	player := s.Entities.Player()
 	player.Right()
+	player.Right()
 	player.Down()
+	player.Down()
+	player.Left()
 	_, another := player.collisionEntity()
 	assert.NotEqual(t, Player, another.Kind)
 
 	// 重なってないとき
-	player.Left()
+	player.Right()
 	ok, _ := player.collisionEntity()
 	assert.Equal(t, false, ok)
 }
 
 func TestPlayerMove(t *testing.T) {
 	s := InitStage()
-	// @..#
-	// .&.#
-	// #_.#
-	// ....
 
 	player := s.Entities.Player()
 
@@ -199,7 +203,9 @@ func TestPlayerOver(t *testing.T) {
 
 	player := s.Entities.Player()
 	player.Right()
+	player.Right()
 	player.Down()
+	player.Left()
 
 	expect := `...#
 .@.#
@@ -212,14 +218,12 @@ func TestPlayerOver(t *testing.T) {
 func TestCollision(t *testing.T) {
 	s := InitStage()
 
-	// @..#
-	// .&.#
-	// #_.#
-	// ....
-
 	player := s.Entities.Player()
 	player.Right()
+	player.Right()
 	player.Down()
+	player.Down()
+	player.Left()
 	assert.Equal(t, true, player.isCollision())
 }
 
@@ -244,4 +248,28 @@ func TestGetEntitiesByPos(t *testing.T) {
 
 	ok, _ := s.Entities.GetEntitiesByPos(Pos{X: 0, Y: 1})
 	assert.Equal(t, false, ok)
+}
+
+func TestPush(t *testing.T) {
+	s := InitStage()
+
+	player := s.Entities.Player()
+	player.Right()
+	player.Down()
+
+	expect := `...#
+.@.#
+#&.#
+....
+`
+	assert.Equal(t, expect, s.String())
+
+	// ヌルポ
+	// 	player.Down()
+	// 	expect = `...#
+	// ...#
+	// #@.#
+	// .&..
+	// `
+	// 	assert.Equal(t, expect, s.String())
 }

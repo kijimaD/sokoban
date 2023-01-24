@@ -229,3 +229,20 @@ func (es Entities) GetEntitiesByPos(p Pos) (bool, Entities) {
 
 	return success, result
 }
+
+// すべてのゴール上に荷物が置かれていればクリア
+func (es Entities) isFinish() bool {
+	var finish bool
+	for _, e := range es {
+		if e.Kind == Goal {
+			if targets := e.collisionEntities(); len(targets) > 0 {
+				for _, t := range targets {
+					if t.Kind == Cargo {
+						finish = true
+					}
+				}
+			}
+		}
+	}
+	return finish
+}

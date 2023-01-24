@@ -285,3 +285,24 @@ func TestPush(t *testing.T) {
 `
 	assert.Equal(t, expect, s.String())
 }
+
+func TestPushDouble(t *testing.T) {
+	// s := InitStage()
+
+	// 2つは押せない
+}
+
+func TestIsFinish(t *testing.T) {
+	s := InitStage()
+
+	player := s.Entities.Player()
+
+	player.Right()
+	assert.Equal(t, false, s.Entities.isFinish())
+
+	player.Down()
+	assert.Equal(t, true, s.Entities.isFinish())
+
+	player.Down()
+	assert.Equal(t, false, s.Entities.isFinish())
+}

@@ -84,6 +84,9 @@ func (e *Entity) moveRelative(xOffset int, yOffset int) {
 func (e *Entity) canMove(d Direction) bool {
 	var canTile bool
 	canEntity := true
+	initialPosX := e.Pos.X
+	initialPosY := e.Pos.Y
+
 	switch d {
 	case LeftD:
 		e.left()
@@ -102,7 +105,6 @@ func (e *Entity) canMove(d Direction) bool {
 		} else {
 			canEntity = true
 		}
-		e.right()
 	case RightD:
 		e.right()
 		canTile = e.currentTile().Kind == Floor
@@ -120,7 +122,6 @@ func (e *Entity) canMove(d Direction) bool {
 		} else {
 			canEntity = true
 		}
-		e.left()
 	case DownD:
 		e.down()
 		canTile = e.currentTile().Kind == Floor
@@ -138,7 +139,6 @@ func (e *Entity) canMove(d Direction) bool {
 		} else {
 			canEntity = true
 		}
-		e.up()
 	case UpD:
 		e.up()
 		canTile = e.currentTile().Kind == Floor
@@ -156,8 +156,9 @@ func (e *Entity) canMove(d Direction) bool {
 		} else {
 			canEntity = true
 		}
-		e.down()
 	}
+	e.Pos.X = initialPosX
+	e.Pos.Y = initialPosY
 	return canTile && canEntity
 }
 

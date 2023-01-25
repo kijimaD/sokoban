@@ -95,7 +95,6 @@ func (e *Entity) canMove(d Direction) bool {
 					t.Left()
 					break
 				} else if t.Kind != Cargo {
-
 				} else {
 					canEntity = false
 				}
@@ -113,6 +112,7 @@ func (e *Entity) canMove(d Direction) bool {
 				if t.Kind == Cargo && t.canMove(RightD) {
 					t.Right()
 					break
+				} else if t.Kind != Cargo {
 				} else {
 					canEntity = false
 				}
@@ -130,6 +130,7 @@ func (e *Entity) canMove(d Direction) bool {
 				if t.Kind == Cargo && t.canMove(DownD) {
 					t.Down()
 					break
+				} else if t.Kind != Cargo {
 				} else {
 					canEntity = false
 				}
@@ -147,6 +148,7 @@ func (e *Entity) canMove(d Direction) bool {
 				if t.Kind == Cargo && t.canMove(UpD) {
 					t.Up()
 					break
+				} else if t.Kind != Cargo {
 				} else {
 					canEntity = false
 				}

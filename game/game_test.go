@@ -229,6 +229,22 @@ func TestCollision(t *testing.T) {
 	assert.Equal(t, true, player.isCollision())
 }
 
+func TestCollisionCargo(t *testing.T) {
+	s := InitStage()
+
+	cargo := Entity{
+		&Pos{
+			X: 1,
+			Y: 1,
+		},
+		&s,
+		Cargo,
+	}
+	s.Entities = append(s.Entities, cargo)
+
+	assert.Equal(t, true, cargo.isCollision())
+}
+
 // 位置で正しくentityを探せていることを確認する
 func TestGetEntitiesByPos(t *testing.T) {
 	s := InitStage()
@@ -286,10 +302,34 @@ func TestPush(t *testing.T) {
 	assert.Equal(t, expect, s.String())
 }
 
-func TestPushDouble(t *testing.T) {
-	// s := InitStage()
+func TestDisplayPriority(t *testing.T) {
+	// cargoとgoalが同じ座標にあるときは表示が変わる
 
-	// 2つは押せない
+}
+
+// 2つは押せない
+func TestPushDouble(t *testing.T) {
+	s := InitStage()
+	cargo := Entity{
+		&Pos{
+			X: 2,
+			Y: 1,
+		},
+		&s,
+		Cargo,
+	}
+	s.Entities = append(s.Entities, cargo)
+
+	player := s.Entities.Player()
+	player.Down()
+	player.Right()
+
+	expect := `...#
+@&&#
+#_.#
+....
+`
+	assert.Equal(t, expect, s.String())
 }
 
 func TestIsFinish(t *testing.T) {

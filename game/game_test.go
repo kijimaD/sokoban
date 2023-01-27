@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func InitStage() Stage {
+func InitStage() *Stage {
 	// @..#
 	// .&.#
 	// #_.#
@@ -70,7 +70,7 @@ func InitStage() Stage {
 	}
 	stage.Entities = append(stage.Entities, goal)
 
-	return stage
+	return &stage
 }
 
 func TestInit(t *testing.T) {
@@ -237,7 +237,7 @@ func TestCollisionCargo(t *testing.T) {
 			X: 1,
 			Y: 1,
 		},
-		&s,
+		s,
 		Cargo,
 	}
 	s.Entities = append(s.Entities, cargo)
@@ -278,7 +278,7 @@ func TestPush(t *testing.T) {
 
 	expect := `...#
 .@.#
-#&.#
+#✓.#
 ....
 `
 	assert.Equal(t, expect, s.String())
@@ -315,18 +315,51 @@ func TestPushDouble(t *testing.T) {
 			X: 2,
 			Y: 1,
 		},
-		&s,
+		s,
 		Cargo,
 	}
 	s.Entities = append(s.Entities, cargo)
-
 	player := s.Entities.Player()
 	player.Down()
-	player.Right()
-
 	expect := `...#
 @&&#
 #_.#
+....
+`
+	assert.Equal(t, expect, s.String())
+	player.Right()
+	expect = `...#
+@&&#
+#_.#
+....
+`
+	assert.Equal(t, expect, s.String())
+}
+
+func TestPushDoubleNoWall(t *testing.T) {
+	s := InitStage()
+	cargo := Entity{
+		&Pos{
+			X: 1,
+			Y: 2,
+		},
+		s,
+		Cargo,
+	}
+	s.Entities = append(s.Entities, cargo)
+	player := s.Entities.Player()
+	player.Right()
+	expect := `.@.#
+.&.#
+#✓.#
+....
+`
+	assert.Equal(t, expect, s.String())
+
+	player.Down()
+	expect = `.@.#
+.&.#
+#✓.#
 ....
 `
 	assert.Equal(t, expect, s.String())

@@ -106,7 +106,13 @@ func (e *Entity) canMove(d Direction) bool {
 				}
 			}
 		} else {
-			canEntity = true
+			targets := e.collisionEntities()
+			for _, t := range targets {
+				if t.Kind == Cargo {
+					canEntity = false
+					break
+				}
+			}
 		}
 	case RightD:
 		e.right()
@@ -126,7 +132,13 @@ func (e *Entity) canMove(d Direction) bool {
 				}
 			}
 		} else {
-			canEntity = true
+			targets := e.collisionEntities()
+			for _, t := range targets {
+				if t.Kind == Cargo {
+					canEntity = false
+					break
+				}
+			}
 		}
 	case DownD:
 		e.down()
@@ -146,7 +158,13 @@ func (e *Entity) canMove(d Direction) bool {
 				}
 			}
 		} else {
-			canEntity = true
+			targets := e.collisionEntities()
+			for _, t := range targets {
+				if t.Kind == Cargo {
+					canEntity = false
+					break
+				}
+			}
 		}
 	case UpD:
 		e.up()
@@ -166,7 +184,13 @@ func (e *Entity) canMove(d Direction) bool {
 				}
 			}
 		} else {
-			canEntity = true
+			targets := e.collisionEntities()
+			for _, t := range targets {
+				if t.Kind == Cargo {
+					canEntity = false
+					break
+				}
+			}
 		}
 	}
 	e.Pos.X = initialPosX

@@ -23,7 +23,15 @@ func (s Stage) String() string {
 			char := ""
 			tile := s.Tiles[Pos{X: j, Y: i}]
 			if ok, es := s.Entities.GetEntitiesByPos(Pos{X: j, Y: i}); ok {
-				char = es[0].String() // todo
+				if len(es) == 1 {
+					char = es[0].String() // todo
+				} else if len(es) == 2 {
+					if (es[0].Kind == Cargo && es[1].Kind == Goal) || (es[1].Kind == Cargo && es[0].Kind == Goal) {
+						char = `✓`
+					} else if es[0].Kind == Player || es[1].Kind == Player {
+						char = PlayerChar
+					}
+				}
 			} else {
 				char = tile.String()
 			}

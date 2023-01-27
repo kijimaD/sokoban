@@ -300,11 +300,38 @@ func TestPush(t *testing.T) {
 .&..
 `
 	assert.Equal(t, expect, s.String())
+
 }
 
+// goalが他のentityと同じ座標にあるときは表示が変わる
 func TestDisplayPriority(t *testing.T) {
-	// cargoとgoalが同じ座標にあるときは表示が変わる
+	s := InitStage()
+	player := s.Entities.Player()
+	player.Right()
+	expect := `.@.#
+.&.#
+#_.#
+....
+`
+	assert.Equal(t, expect, s.String())
 
+	// cargoと重なるとき✓
+	player.Down()
+	expect = `...#
+.@.#
+#✓.#
+....
+`
+	assert.Equal(t, expect, s.String())
+
+	// playerと重なるとき@
+	player.Down()
+	expect = `...#
+...#
+#@.#
+.&..
+`
+	assert.Equal(t, expect, s.String())
 }
 
 // 2つは押せない

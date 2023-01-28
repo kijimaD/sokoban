@@ -63,6 +63,16 @@ func NewStageByString(tiles string, entities string) *Stage {
 	return &stage
 }
 
+func NewStagePlane(w int) *Stage {
+	stage := Stage{Tiles: map[Pos]Tile{}}
+	for i := 0; i < w; i++ {
+		for j := 0; j < w; j++ {
+			stage.Tiles[Pos{X: j, Y: i}] = Tile{Kind: Floor}
+		}
+	}
+	return &stage
+}
+
 func stageStrToArray(s string) (error, []string) {
 	// "12\n34"
 	// >>>>

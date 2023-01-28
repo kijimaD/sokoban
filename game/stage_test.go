@@ -23,6 +23,18 @@ _..
 	assert.Equal(t, expect, s.String())
 }
 
+func TestNewStagePlane(t *testing.T) {
+	s := NewStagePlane(5)
+	expect := `.....
+.....
+.....
+.....
+.....
+`
+	assert.Equal(t, expect, s.String())
+
+}
+
 func TestStageString(t *testing.T) {
 	s := InitStage()
 

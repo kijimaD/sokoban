@@ -21,14 +21,14 @@ type Entity struct {
 	Kind  EntityKind
 }
 
-func NewEntity(pos *Pos, stage *Stage, kind EntityKind) *Entity {
+func NewEntity(pos *Pos, stage *Stage, kind EntityKind) Entity {
 	e := Entity{
 		Pos:   pos,
 		Stage: stage,
 		Kind:  kind,
 	}
 
-	return &e
+	return e
 }
 
 func (e *Entity) String() string {

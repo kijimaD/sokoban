@@ -8,9 +8,17 @@ import (
 
 func TestNewStageByString(t *testing.T) {
 	tileChar := `..#
-.#.
+..#
 ...
 `
-	s := NewStageByString(tileChar)
-	assert.Equal(t, tileChar, s.String())
+	entityChar := `@~~
+~&~
+_~~
+`
+	expect := `@.#
+.&#
+_..
+`
+	s := NewStageByString(tileChar, entityChar)
+	assert.Equal(t, expect, s.String())
 }

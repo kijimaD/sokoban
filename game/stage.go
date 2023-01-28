@@ -14,21 +14,37 @@ type Stage struct {
 }
 
 // TODO: バリデーションを入れる
-// TODO: entityに対応させる
-func NewStageByString(tiles string) *Stage {
-	// ["12",
-	//  "34"]
-	arr := stageStrToArray(tiles)
-
+func NewStageByString(tiles string, entities string) *Stage {
 	stage := Stage{Tiles: map[Pos]Tile{}}
-	for i, col := range arr {
+
+	tileArr := stageStrToArray(tiles)
+	for i, col := range tileArr {
 		for j, rune := range col {
 			switch string(rune) {
 			case WallChar:
 				stage.Tiles[Pos{X: j, Y: i}] = Tile{Kind: Wall}
 			case FloorChar:
 				stage.Tiles[Pos{X: j, Y: i}] = Tile{Kind: Floor}
-			case "\n":
+			default:
+				fmt.Printf("`%s`は不正な文字です\n", string(rune))
+			}
+		}
+	}
+
+	entityArr := stageStrToArray(entities)
+	for i, col := range entityArr {
+		for j, rune := range col {
+			switch string(rune) {
+			case PlayerChar:
+				player := NewEntity(&Pos{X: j, Y: i}, &stage, Player)
+				stage.Entities = append(stage.Entities, player)
+			case CargoChar:
+				cargo := NewEntity(&Pos{X: j, Y: i}, &stage, Cargo)
+				stage.Entities = append(stage.Entities, cargo)
+			case GoalChar:
+				goal := NewEntity(&Pos{X: j, Y: i}, &stage, Goal)
+				stage.Entities = append(stage.Entities, goal)
+			case "~":
 			default:
 				fmt.Printf("`%s`は不正な文字です\n", string(rune))
 			}
@@ -39,6 +55,12 @@ func NewStageByString(tiles string) *Stage {
 }
 
 func stageStrToArray(s string) []string {
+	// "12\n34"
+	// |
+	// v
+	// ["12",
+	//  "34"]
+
 	arr := []string{}
 	var row string
 	for _, rune := range s {

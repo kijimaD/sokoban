@@ -161,7 +161,7 @@ func (s Stage) IsFinish() bool {
 				}
 			}
 
-			if tileFinish == false {
+			if !tileFinish {
 				finish = false
 				break
 			}

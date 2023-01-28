@@ -2,6 +2,10 @@
 .DEFAULT_GOAL := help
 
 DOCKER_TAG := latest
+
+run: ## run CLI sokoban
+	go run main.go
+
 build: ## Build image for deploy
 	docker build -t kijimad/sokoban:${DOCKER_TAG} \
 	--target deploy ./

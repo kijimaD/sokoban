@@ -3,7 +3,7 @@
 Implement puzzle game "sokoban".
 
 ```
-$ go run main.go
+$ sokoban
 
 ---- START ----
 @: You
@@ -27,6 +27,12 @@ _: Goal
 #✓.#
 ....
 
+```
+
+## install
+
+```shell
+go install github.com/kijimaD/sokoban@main
 ```
 
 ## develop

@@ -1,6 +1,7 @@
 package game
 
 import (
+	"fmt"
 	"math"
 )
 
@@ -12,6 +13,42 @@ type Stage struct {
 	Entities Entities
 }
 
+// TODO: バリデーションを入れる
+// TODO: entityに対応させる
+func NewStageByString(tiles string) *Stage {
+	// ["12",
+	//  "34"]
+	arr := []string{}
+	var row string
+	for _, rune := range tiles {
+		s := string(rune)
+		if s == "\n" {
+			arr = append(arr, row)
+			row = ""
+		} else {
+			row += s
+		}
+	}
+
+	stage := Stage{Tiles: map[Pos]Tile{}}
+	for i, col := range arr {
+		for j, rune := range col {
+			switch string(rune) {
+			case WallChar:
+				stage.Tiles[Pos{X: j, Y: i}] = Tile{Kind: Wall}
+			case FloorChar:
+				stage.Tiles[Pos{X: j, Y: i}] = Tile{Kind: Floor}
+			case "\n":
+			default:
+				fmt.Printf("`%s`は不正な文字です\n", string(rune))
+			}
+		}
+	}
+
+	return &stage
+}
+
+// テスト用
 func InitStage() *Stage {
 	// @..#
 	// .&.#

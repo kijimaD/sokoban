@@ -5,7 +5,7 @@ type EntityKind int
 const (
 	Player EntityKind = iota
 	Cargo
-	Goal
+	Goal // TODO: tileに移動する
 )
 
 const (
@@ -19,6 +19,16 @@ type Entity struct {
 	Pos   *Pos
 	Stage *Stage
 	Kind  EntityKind
+}
+
+func NewEntity(pos *Pos, stage *Stage, kind EntityKind) *Entity {
+	e := Entity{
+		Pos:   pos,
+		Stage: stage,
+		Kind:  kind,
+	}
+
+	return &e
 }
 
 func (e *Entity) String() string {

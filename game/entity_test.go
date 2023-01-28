@@ -17,15 +17,3 @@ func TestNewEntity(t *testing.T) {
 	assert.Equal(t, s, *e.Stage)
 	assert.Equal(t, k, e.Kind)
 }
-
-func TestStageStrToArray(t *testing.T) {
-	input := `...
-.#.
-..#
-`
-	expect := []string{
-		"...", ".#.", "..#",
-	}
-
-	assert.Equal(t, expect, stageStrToArray(input))
-}

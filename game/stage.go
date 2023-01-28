@@ -1,8 +1,13 @@
 package game
 
 import (
+	"errors"
 	"fmt"
 	"math"
+)
+
+var (
+	StageInvalidError = errors.New("invalid stage")
 )
 
 // (x, y)の形でアクセスできる
@@ -13,11 +18,13 @@ type Stage struct {
 	Entities Entities
 }
 
-// TODO: バリデーションを入れる
 func NewStageByString(tiles string, entities string) *Stage {
 	stage := Stage{Tiles: map[Pos]Tile{}}
 
-	tileArr := stageStrToArray(tiles)
+	err, tileArr := stageStrToArray(tiles)
+	if err != nil {
+		panic(err)
+	}
 	for i, col := range tileArr {
 		for j, rune := range col {
 			switch string(rune) {
@@ -33,7 +40,10 @@ func NewStageByString(tiles string, entities string) *Stage {
 		}
 	}
 
-	entityArr := stageStrToArray(entities)
+	err, entityArr := stageStrToArray(entities)
+	if err != nil {
+		panic(err)
+	}
 	for i, col := range entityArr {
 		for j, rune := range col {
 			switch string(rune) {
@@ -53,10 +63,9 @@ func NewStageByString(tiles string, entities string) *Stage {
 	return &stage
 }
 
-func stageStrToArray(s string) []string {
+func stageStrToArray(s string) (error, []string) {
 	// "12\n34"
-	// |
-	// v
+	// >>>>
 	// ["12",
 	//  "34"]
 
@@ -71,7 +80,16 @@ func stageStrToArray(s string) []string {
 			row += s
 		}
 	}
-	return arr
+
+	// validation
+	l := len(arr)
+	for _, r := range arr {
+		if l != len(r) {
+			return StageInvalidError, nil
+		}
+	}
+
+	return nil, arr
 }
 
 // テスト用

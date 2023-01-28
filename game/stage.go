@@ -18,17 +18,7 @@ type Stage struct {
 func NewStageByString(tiles string) *Stage {
 	// ["12",
 	//  "34"]
-	arr := []string{}
-	var row string
-	for _, rune := range tiles {
-		s := string(rune)
-		if s == "\n" {
-			arr = append(arr, row)
-			row = ""
-		} else {
-			row += s
-		}
-	}
+	arr := stageStrToArray(tiles)
 
 	stage := Stage{Tiles: map[Pos]Tile{}}
 	for i, col := range arr {
@@ -46,6 +36,21 @@ func NewStageByString(tiles string) *Stage {
 	}
 
 	return &stage
+}
+
+func stageStrToArray(s string) []string {
+	arr := []string{}
+	var row string
+	for _, rune := range s {
+		s := string(rune)
+		if s == "\n" {
+			arr = append(arr, row)
+			row = ""
+		} else {
+			row += s
+		}
+	}
+	return arr
 }
 
 // テスト用

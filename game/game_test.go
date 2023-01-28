@@ -331,11 +331,11 @@ func TestIsFinish(t *testing.T) {
 	player := s.Entities.Player()
 
 	player.Right()
-	assert.Equal(t, false, s.Entities.isFinish())
+	assert.Equal(t, false, s.Entities.IsFinish())
 
 	player.Down()
-	assert.Equal(t, true, s.Entities.isFinish())
+	assert.Equal(t, true, s.Entities.IsFinish())
 
 	player.Down()
-	assert.Equal(t, false, s.Entities.isFinish())
+	assert.Equal(t, false, s.Entities.IsFinish())
 }

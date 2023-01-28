@@ -26,10 +26,10 @@ _: Goal
 	fmt.Print(splash)
 
 	s := game.InitStage()
+	fmt.Println(s)
 	player := s.Entities.Player()
 
 	for {
-		fmt.Println(s)
 		scanner := bufio.NewScanner(os.Stdin)
 		scanner.Scan()
 		in := scanner.Text()
@@ -45,6 +45,14 @@ _: Goal
 			player.Right()
 		default:
 			continue
+		}
+
+		fmt.Println(s)
+
+		if s.Entities.IsFinish() {
+			fmt.Println("solve!!")
+
+			break
 		}
 	}
 }

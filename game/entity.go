@@ -270,7 +270,7 @@ func (es Entities) GetEntitiesByPos(p Pos) (bool, Entities) {
 }
 
 // すべてのゴール上に荷物が置かれていればクリア
-func (es Entities) isFinish() bool {
+func (es Entities) IsFinish() bool {
 	var finish bool
 	for _, e := range es {
 		if e.Kind == Goal {

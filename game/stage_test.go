@@ -23,6 +23,17 @@ _..
 	assert.Equal(t, expect, s.String())
 }
 
+func TestStageString(t *testing.T) {
+	s := InitStage()
+
+	expect := `@..#
+.&.#
+#_.#
+....
+`
+	assert.Equal(t, expect, s.String())
+}
+
 func TestStageStrToArray(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
 		input := `...
@@ -46,4 +57,32 @@ func TestStageStrToArray(t *testing.T) {
 		err, _ := stageStrToArray(input)
 		assert.Equal(t, StageInvalidError, err)
 	})
+}
+
+func TestStageToSlice(t *testing.T) {
+	s := InitStage()
+
+	// FIXME: 合ってない
+	expect := [][]Tile{
+		{Tile{Kind: 1}, Tile{Kind: 1}, Tile{Kind: 0}, Tile{Kind: 1}},
+		{Tile{Kind: 1}, Tile{Kind: 1}, Tile{Kind: 2}, Tile{Kind: 1}},
+		{Tile{Kind: 1}, Tile{Kind: 1}, Tile{Kind: 1}, Tile{Kind: 1}},
+		{Tile{Kind: 0}, Tile{Kind: 0}, Tile{Kind: 0}, Tile{Kind: 1}},
+	}
+
+	assert.Equal(t, expect, s.ToSlice())
+}
+
+func TestIsFinish(t *testing.T) {
+	s := InitStage()
+	player := s.Entities.Player()
+
+	player.Right()
+	assert.Equal(t, false, s.IsFinish())
+
+	player.Down()
+	assert.Equal(t, true, s.IsFinish())
+
+	player.Down()
+	assert.Equal(t, false, s.IsFinish())
 }

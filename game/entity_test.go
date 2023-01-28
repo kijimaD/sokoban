@@ -17,3 +17,54 @@ func TestNewEntity(t *testing.T) {
 	assert.Equal(t, s, *e.Stage)
 	assert.Equal(t, k, e.Kind)
 }
+
+func TestCollisionEntities(t *testing.T) {
+	s := InitStage()
+
+	player := s.Entities.Player()
+	player.Right()
+	player.down() // 強制的に動かして重ねる
+	another := player.collisionEntities()
+	assert.Equal(t, 1, len(another))
+	assert.NotEqual(t, Player, another[0].Kind)
+
+	// 重なってないとき
+	player.Right()
+	another = player.collisionEntities()
+	assert.Equal(t, 0, len(another))
+}
+
+// プレイヤーは上に表示される
+func TestPlayerOver(t *testing.T) {
+	s := InitStage()
+
+	player := s.Entities.Player()
+	player.Right()
+	player.Right()
+	player.Down()
+	player.Down()
+	player.Left()
+
+	expect := `...#
+.&.#
+#@.#
+....
+`
+	assert.Equal(t, expect, s.String())
+}
+
+func TestCollision(t *testing.T) {
+	s := InitStage()
+
+	cargo := Entity{
+		&Pos{
+			X: 1,
+			Y: 1,
+		},
+		s,
+		Cargo,
+	}
+	s.Entities = append(s.Entities, cargo)
+
+	assert.Equal(t, true, cargo.isCollision())
+}

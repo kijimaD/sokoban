@@ -19,15 +19,6 @@ const (
 	GoalChar  = `_`
 )
 
-type Direction int
-
-const (
-	RightD Direction = iota
-	LeftD
-	UpD
-	DownD
-)
-
 func (t Tile) String() string {
 	if t.Kind == Wall {
 		return WallChar
@@ -38,10 +29,4 @@ func (t Tile) String() string {
 	} else {
 		return "?"
 	}
-}
-
-// マップ上の座標
-type Pos struct {
-	X int
-	Y int
 }

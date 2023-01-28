@@ -49,7 +49,7 @@ _: Goal
 
 		fmt.Println(s)
 
-		if s.Entities.IsFinish() {
+		if s.IsFinish() {
 			fmt.Println("solve!!")
 
 			break

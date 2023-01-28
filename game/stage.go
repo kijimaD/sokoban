@@ -25,6 +25,8 @@ func NewStageByString(tiles string, entities string) *Stage {
 				stage.Tiles[Pos{X: j, Y: i}] = Tile{Kind: Wall}
 			case FloorChar:
 				stage.Tiles[Pos{X: j, Y: i}] = Tile{Kind: Floor}
+			case GoalChar:
+				stage.Tiles[Pos{X: j, Y: i}] = Tile{Kind: Goal}
 			default:
 				fmt.Printf("`%s`は不正な文字です\n", string(rune))
 			}
@@ -41,9 +43,6 @@ func NewStageByString(tiles string, entities string) *Stage {
 			case CargoChar:
 				cargo := NewEntity(&Pos{X: j, Y: i}, &stage, Cargo)
 				stage.Entities = append(stage.Entities, cargo)
-			case GoalChar:
-				goal := NewEntity(&Pos{X: j, Y: i}, &stage, Goal)
-				stage.Entities = append(stage.Entities, goal)
 			case "~":
 			default:
 				fmt.Printf("`%s`は不正な文字です\n", string(rune))
@@ -84,12 +83,12 @@ func InitStage() *Stage {
 
 	tiles := `...#
 ...#
-#..#
+#_.#
 ....
 `
 	entities := `@~~~
 ~&~~
-~_~~
+~~~~
 ~~~~
 `
 	stage := NewStageByString(tiles, entities)
@@ -108,11 +107,12 @@ func (s Stage) String() string {
 			tile := s.Tiles[Pos{X: j, Y: i}]
 			if ok, es := s.Entities.GetEntitiesByPos(Pos{X: j, Y: i}); ok {
 				if len(es) == 1 {
-					char = es[0].String() // todo
-				} else if len(es) == 2 {
-					if (es[0].Kind == Cargo && es[1].Kind == Goal) || (es[1].Kind == Cargo && es[0].Kind == Goal) {
+					char = es[0].String()
+					if es[0].Kind == Cargo && tile.Kind == Goal {
 						char = `✓`
-					} else if es[0].Kind == Player || es[1].Kind == Player {
+					}
+				} else if len(es) == 2 {
+					if es[0].Kind == Player || es[1].Kind == Player {
 						char = PlayerChar
 					}
 				}
@@ -145,4 +145,27 @@ func (s Stage) ToSlice() [][]Tile {
 	}
 
 	return arr
+}
+
+// すべてのゴール上に荷物が置かれていればクリア
+func (s Stage) IsFinish() bool {
+	finish := true
+	for k, v := range s.Tiles {
+		tileFinish := false
+		if v.Kind == Goal {
+			_, es := s.Entities.GetEntitiesByPos(k)
+			for _, e := range es {
+				if e.Kind == Cargo {
+					tileFinish = true
+					break
+				}
+			}
+
+			if tileFinish == false {
+				finish = false
+				break
+			}
+		}
+	}
+	return finish
 }

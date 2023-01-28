@@ -5,13 +5,11 @@ type EntityKind int
 const (
 	Player EntityKind = iota
 	Cargo
-	Goal // TODO: tileに移動する
 )
 
 const (
 	PlayerChar = `@`
 	CargoChar  = `&`
-	GoalChar   = `_`
 )
 
 // タイルの上にあるもの。プレイヤーや荷物など、移動する
@@ -38,8 +36,6 @@ func (e *Entity) String() string {
 		str = PlayerChar
 	case Cargo:
 		str = CargoChar
-	case Goal:
-		str = GoalChar
 	}
 	return str
 }
@@ -100,7 +96,7 @@ func (e *Entity) canMove(d Direction) bool {
 	switch d {
 	case LeftD:
 		e.left()
-		canTile = e.currentTile().Kind == Floor
+		canTile = e.currentTile().Kind == Floor || e.currentTile().Kind == Goal
 		if e.Kind == Player {
 			targets := e.collisionEntities()
 			for _, t := range targets {
@@ -126,7 +122,7 @@ func (e *Entity) canMove(d Direction) bool {
 		}
 	case RightD:
 		e.right()
-		canTile = e.currentTile().Kind == Floor
+		canTile = e.currentTile().Kind == Floor || e.currentTile().Kind == Goal
 		if e.Kind == Player {
 			targets := e.collisionEntities()
 			for _, t := range targets {
@@ -152,7 +148,7 @@ func (e *Entity) canMove(d Direction) bool {
 		}
 	case DownD:
 		e.down()
-		canTile = e.currentTile().Kind == Floor
+		canTile = e.currentTile().Kind == Floor || e.currentTile().Kind == Goal
 		if e.Kind == Player {
 			targets := e.collisionEntities()
 			for _, t := range targets {
@@ -178,7 +174,7 @@ func (e *Entity) canMove(d Direction) bool {
 		}
 	case UpD:
 		e.up()
-		canTile = e.currentTile().Kind == Floor
+		canTile = e.currentTile().Kind == Floor || e.currentTile().Kind == Goal
 		if e.Kind == Player {
 			targets := e.collisionEntities()
 			for _, t := range targets {
@@ -277,21 +273,4 @@ func (es Entities) GetEntitiesByPos(p Pos) (bool, Entities) {
 	}
 
 	return success, result
-}
-
-// すべてのゴール上に荷物が置かれていればクリア
-func (es Entities) IsFinish() bool {
-	var finish bool
-	for _, e := range es {
-		if e.Kind == Goal {
-			if targets := e.collisionEntities(); len(targets) > 0 {
-				for _, t := range targets {
-					if t.Kind == Cargo {
-						finish = true
-					}
-				}
-			}
-		}
-	}
-	return finish
 }

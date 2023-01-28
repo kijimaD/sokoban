@@ -9,11 +9,11 @@ import (
 func TestNewStageByString(t *testing.T) {
 	tileChar := `..#
 ..#
-...
+_..
 `
 	entityChar := `@~~
 ~&~
-_~~
+~~~
 `
 	expect := `@.#
 .&#

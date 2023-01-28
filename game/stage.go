@@ -12,6 +12,73 @@ type Stage struct {
 	Entities Entities
 }
 
+func InitStage() *Stage {
+	// @..#
+	// .&.#
+	// #_.#
+	// ....
+
+	tiles := map[Pos]Tile{
+		Pos{X: 0, Y: 0}: Tile{Kind: 1},
+		Pos{X: 1, Y: 0}: Tile{Kind: 1},
+		Pos{X: 2, Y: 0}: Tile{Kind: 1},
+		Pos{X: 3, Y: 0}: Tile{Kind: 0},
+
+		Pos{X: 0, Y: 1}: Tile{Kind: 1},
+		Pos{X: 1, Y: 1}: Tile{Kind: 1},
+		Pos{X: 2, Y: 1}: Tile{Kind: 1},
+		Pos{X: 3, Y: 1}: Tile{Kind: 0},
+
+		Pos{X: 0, Y: 2}: Tile{Kind: 0},
+		Pos{X: 1, Y: 2}: Tile{Kind: 1},
+		Pos{X: 2, Y: 2}: Tile{Kind: 1},
+		Pos{X: 3, Y: 2}: Tile{Kind: 0},
+
+		Pos{X: 0, Y: 3}: Tile{Kind: 1},
+		Pos{X: 1, Y: 3}: Tile{Kind: 1},
+		Pos{X: 2, Y: 3}: Tile{Kind: 1},
+		Pos{X: 3, Y: 3}: Tile{Kind: 1},
+	}
+
+	stage := Stage{
+		Tiles:    tiles,
+		Entities: Entities{},
+	}
+
+	// FIXME: entity初期化の順番に依存する
+	player := Entity{
+		&Pos{
+			X: 0,
+			Y: 0,
+		},
+		&stage,
+		Player,
+	}
+	stage.Entities = append(stage.Entities, player)
+
+	cargo := Entity{
+		&Pos{
+			X: 1,
+			Y: 1,
+		},
+		&stage,
+		Cargo,
+	}
+	stage.Entities = append(stage.Entities, cargo)
+
+	goal := Entity{
+		&Pos{
+			X: 1,
+			Y: 2,
+		},
+		&stage,
+		Goal,
+	}
+	stage.Entities = append(stage.Entities, goal)
+
+	return &stage
+}
+
 func (s Stage) String() string {
 	result := ""
 

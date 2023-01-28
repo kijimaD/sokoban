@@ -1,9 +1,8 @@
 package main
 
-import (
-	"fmt"
-)
+import "github.com/kijimaD/sokoban/cli"
 
 func main() {
-	fmt.Println("Hello world")
+	cli.Run()
+
 }

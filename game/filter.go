@@ -7,11 +7,23 @@ import (
 )
 
 // ランダムにcargoとgoalを配置
-func (s *Stage) setCG(num int) {
+func (s *Stage) putCG(num int) {
 	poses := s.randomPoses(num)
 	for _, p := range poses {
 		s.Entities = append(s.Entities, NewEntity(p, s, Cargo))
 		s.Tiles[p] = Tile{Kind: Goal}
+	}
+}
+
+// ランダムに壁を配置
+func (s *Stage) putWall(num int) {
+	poses := s.randomPoses(num)
+
+	// 既にgoalになってるタイルを除く
+	for _, p := range poses {
+		if s.Tiles[p].Kind != Goal {
+			s.Tiles[p] = Tile{Kind: Wall}
+		}
 	}
 }
 

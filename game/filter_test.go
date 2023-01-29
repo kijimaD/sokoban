@@ -8,10 +8,10 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestSetCG(t *testing.T) {
+func TestPutCG(t *testing.T) {
 	t.Run("1", func(t *testing.T) {
 		s := NewStagePlane(4)
-		s.setCG(1)
+		s.putCG(1)
 		assert.Equal(t, 1, len(s.Entities))
 
 		countTile := 0
@@ -28,7 +28,7 @@ func TestSetCG(t *testing.T) {
 
 	t.Run("2", func(t *testing.T) {
 		s := NewStagePlane(4)
-		s.setCG(2)
+		s.putCG(2)
 		assert.Equal(t, 2, len(s.Entities))
 		countTile := 0
 		for _, v := range s.Tiles {
@@ -41,7 +41,27 @@ func TestSetCG(t *testing.T) {
 		c := strings.Count(s.String(), "✓")
 		assert.Equal(t, 2, c)
 	})
+}
 
+func TestPutWall(t *testing.T) {
+	t.Run("1", func(t *testing.T) {
+		s := NewStagePlane(4)
+		s.putWall(2)
+
+		c := strings.Count(s.String(), "#")
+		assert.Equal(t, 2, c)
+	})
+
+	t.Run("not overwrite Goal tile", func(t *testing.T) {
+		s := NewStagePlane(4)
+		s.putCG(2)
+		s.putWall(2)
+
+		cg := strings.Count(s.String(), "✓")
+		assert.Equal(t, 2, cg)
+		wc := strings.Count(s.String(), "#")
+		assert.Equal(t, 2, wc)
+	})
 }
 
 func TestRandomPos(t *testing.T) {

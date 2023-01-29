@@ -19,9 +19,9 @@ type Entity struct {
 	Kind  EntityKind
 }
 
-func NewEntity(pos *Pos, stage *Stage, kind EntityKind) Entity {
+func NewEntity(pos Pos, stage *Stage, kind EntityKind) Entity {
 	e := Entity{
-		Pos:   pos,
+		Pos:   &pos,
 		Stage: stage,
 		Kind:  kind,
 	}

@@ -9,10 +9,8 @@ import (
 // ランダムにcargoとgoalを配置
 func (s *Stage) setCG(num int) {
 	poses := s.randomPoses(num)
-
 	for _, p := range poses {
-		s.Entities = append(s.Entities, NewEntity(&p, s, Cargo))
-
+		s.Entities = append(s.Entities, NewEntity(p, s, Cargo))
 		s.Tiles[p] = Tile{Kind: Goal}
 	}
 }
@@ -58,4 +56,13 @@ func uniq(poses []Pos) []Pos {
 		}
 	}
 	return uniq
+}
+
+func contains(ps []Pos, e Pos) bool {
+	for _, p := range ps {
+		if p == e {
+			return true
+		}
+	}
+	return false
 }

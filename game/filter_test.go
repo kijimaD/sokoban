@@ -2,19 +2,46 @@ package game
 
 import (
 	"reflect"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
 func TestSetCG(t *testing.T) {
-	s := NewStagePlane(4)
-	s.setCG(1)
-	assert.Equal(t, 1, len(s.Entities))
+	t.Run("1", func(t *testing.T) {
+		s := NewStagePlane(4)
+		s.setCG(1)
+		assert.Equal(t, 1, len(s.Entities))
 
-	// FIXME: バグってる
-	// s.setCG(2)
-	// assert.Equal(t, 2, len(s.Entities))
+		countTile := 0
+		for _, v := range s.Tiles {
+			if v.Kind == Goal {
+				countTile += 1
+			}
+		}
+		assert.Equal(t, 1, countTile)
+
+		c := strings.Count(s.String(), "✓")
+		assert.Equal(t, 1, c)
+	})
+
+	t.Run("2", func(t *testing.T) {
+		s := NewStagePlane(4)
+		s.setCG(2)
+		assert.Equal(t, 2, len(s.Entities))
+		countTile := 0
+		for _, v := range s.Tiles {
+			if v.Kind == Goal {
+				countTile += 1
+			}
+		}
+		assert.Equal(t, 2, countTile)
+
+		c := strings.Count(s.String(), "✓")
+		assert.Equal(t, 2, c)
+	})
+
 }
 
 func TestRandomPos(t *testing.T) {

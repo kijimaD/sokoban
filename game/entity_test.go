@@ -11,7 +11,7 @@ func TestNewEntity(t *testing.T) {
 	s := Stage{}
 	k := Player
 
-	e := NewEntity(&p, &s, k)
+	e := NewEntity(p, &s, k)
 
 	assert.Equal(t, p, *e.Pos)
 	assert.Equal(t, s, *e.Stage)
@@ -56,7 +56,7 @@ func TestPlayerOver(t *testing.T) {
 func TestCollision(t *testing.T) {
 	s := InitStage()
 
-	cargo := NewEntity(&Pos{X: 1, Y: 1}, s, Cargo)
+	cargo := NewEntity(Pos{X: 1, Y: 1}, s, Cargo)
 	s.Entities = append(s.Entities, cargo)
 
 	assert.Equal(t, true, cargo.isCollision())

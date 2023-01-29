@@ -48,10 +48,10 @@ func NewStageByString(tiles string, entities string) *Stage {
 		for j, rune := range col {
 			switch string(rune) {
 			case PlayerChar:
-				player := NewEntity(&Pos{X: j, Y: i}, &stage, Player)
+				player := NewEntity(Pos{X: j, Y: i}, &stage, Player)
 				stage.Entities = append(stage.Entities, player)
 			case CargoChar:
-				cargo := NewEntity(&Pos{X: j, Y: i}, &stage, Cargo)
+				cargo := NewEntity(Pos{X: j, Y: i}, &stage, Cargo)
 				stage.Entities = append(stage.Entities, cargo)
 			case "~":
 			default:
@@ -135,14 +135,15 @@ func (s Stage) String() string {
 			tile := s.Tiles[Pos{X: j, Y: i}]
 			if ok, es := s.Entities.GetEntitiesByPos(Pos{X: j, Y: i}); ok {
 				if len(es) == 1 {
-					char = es[0].String()
 					if es[0].Kind == Cargo && tile.Kind == Goal {
 						char = `✓`
+					} else {
+						char = es[0].String()
 					}
-				} else if len(es) == 2 {
-					if es[0].Kind == Player || es[1].Kind == Player {
-						char = PlayerChar
-					}
+				} else if len(es) == 2 && (es[0].Kind == Player || es[1].Kind == Player) {
+					char = PlayerChar
+				} else if len(es) > 1 {
+					char = `?`
 				}
 			} else {
 				char = tile.String()

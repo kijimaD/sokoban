@@ -14,7 +14,7 @@ func (s *Stage) setCG(num int) {
 	s.Tiles[Pos{X: 1, Y: 1}] = Tile{Kind: Goal}
 }
 
-// ランダムに、かぶらない座標をえらぶ
+// ランダムに、座標をえらぶ
 func (s *Stage) randomPos() Pos {
 	seed := time.Now().UnixNano()
 	r := rand.New(rand.NewSource(seed))
@@ -26,7 +26,22 @@ func (s *Stage) randomPos() Pos {
 	return pos
 }
 
-// func (s *Stage) randomPoses(n int) []Pos {}
+// ランダムにかぶらない座標をえらぶ
+func (s *Stage) randomPoses(n int) []Pos {
+	w := len(s.Tiles)
+	if n > w || n == 0 {
+		panic("invalid n value")
+	}
+	var results []Pos
+	for {
+		results = append(results, s.randomPos())
+		results = uniq(results)
+		if len(results) == n {
+			break
+		}
+	}
+	return results
+}
 
 // mapに同じキーは存在できないことを利用する
 func uniq(poses []Pos) []Pos {

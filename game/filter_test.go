@@ -14,11 +14,25 @@ func TestSetCG(t *testing.T) {
 
 func TestRandomPos(t *testing.T) {
 	s := NewStagePlane(4)
-	p := s.randomPos()
-	assert.Equal(t, reflect.TypeOf(Pos{}), reflect.TypeOf(p))
+	for i := 0; i < 10; i++ {
+		p := s.randomPos()
+		assert.Equal(t, reflect.TypeOf(Pos{}), reflect.TypeOf(p))
+		assert.Equal(t, true, 0 <= p.X && p.X <= 3)
+		assert.Equal(t, true, 0 <= p.Y && p.Y <= 3)
+	}
 }
 
-func TestRandomPoses(t *testing.T) {}
+func TestRandomPoses(t *testing.T) {
+	s := NewStagePlane(4)
+	poses := s.randomPoses(3)
+	assert.Equal(t, 3, len(poses))
+	assert.Equal(t, 3, len(uniq(poses)))
+
+	posesMax := s.randomPoses(16)
+	assert.Equal(t, 16, len(posesMax))
+	assert.Equal(t, 16, len(uniq(posesMax)))
+
+}
 
 func TestUniq(t *testing.T) {
 	dup1 := []Pos{Pos{1, 2}, Pos{1, 2}}

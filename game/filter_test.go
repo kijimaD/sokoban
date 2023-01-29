@@ -18,4 +18,12 @@ func TestRandomPos(t *testing.T) {
 	assert.Equal(t, reflect.TypeOf(Pos{}), reflect.TypeOf(p))
 }
 
-// func TestRandomPoses(t *testing.T) {}
+func TestRandomPoses(t *testing.T) {}
+
+func TestUniq(t *testing.T) {
+	dup1 := []Pos{Pos{1, 2}, Pos{1, 2}}
+	assert.Equal(t, []Pos{Pos{1, 2}}, uniq(dup1))
+
+	dup2 := []Pos{Pos{1, 1}, Pos{1, 2}, Pos{1, 1}}
+	assert.Equal(t, []Pos{Pos{1, 1}, Pos{1, 2}}, uniq(dup2))
+}

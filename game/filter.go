@@ -27,3 +27,17 @@ func (s *Stage) randomPos() Pos {
 }
 
 // func (s *Stage) randomPoses(n int) []Pos {}
+
+// mapに同じキーは存在できないことを利用する
+func uniq(poses []Pos) []Pos {
+	m := make(map[Pos]bool)
+	uniq := []Pos{}
+
+	for _, ele := range poses {
+		if !m[ele] {
+			m[ele] = true
+			uniq = append(uniq, ele)
+		}
+	}
+	return uniq
+}

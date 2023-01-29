@@ -8,10 +8,13 @@ import (
 
 // ランダムにcargoとgoalを配置
 func (s *Stage) setCG(num int) {
-	cargo := NewEntity(&Pos{X: 1, Y: 1}, s, Cargo)
-	s.Entities = append(s.Entities, cargo)
+	poses := s.randomPoses(num)
 
-	s.Tiles[Pos{X: 1, Y: 1}] = Tile{Kind: Goal}
+	for _, p := range poses {
+		s.Entities = append(s.Entities, NewEntity(&p, s, Cargo))
+
+		s.Tiles[p] = Tile{Kind: Goal}
+	}
 }
 
 // ランダムに、座標をえらぶ

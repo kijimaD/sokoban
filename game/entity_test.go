@@ -61,3 +61,67 @@ func TestCollision(t *testing.T) {
 
 	assert.Equal(t, true, cargo.isCollision())
 }
+
+func TestPull(t *testing.T) {
+	s := InitStage()
+
+	player := s.Entities.Player()
+	player.moveRelative(1, 2)
+	player.PullDown()
+	expect := `...#
+...#
+#✓.#
+.@..
+`
+	assert.Equal(t, expect, s.String())
+
+	player.moveRelative(0, -2)
+	player.Down() // 荷物を押す
+	player.moveRelative(1, 1)
+
+	expect = `...#
+...#
+#_.#
+.&@.
+`
+	assert.Equal(t, expect, s.String())
+
+	player.PullRight()
+	expect = `...#
+...#
+#_.#
+..&@
+`
+	assert.Equal(t, expect, s.String())
+
+	player.moveRelative(-2, 0)
+	expect = `...#
+...#
+#_.#
+.@&.
+`
+	assert.Equal(t, expect, s.String())
+
+	player.PullLeft()
+	expect = `...#
+...#
+#_.#
+@&..
+`
+	assert.Equal(t, expect, s.String())
+
+	player.moveRelative(1, -1)
+	expect = `...#
+...#
+#@.#
+.&..
+`
+	assert.Equal(t, expect, s.String())
+	player.PullUp()
+	expect = `...#
+.@.#
+#✓.#
+....
+`
+	assert.Equal(t, expect, s.String())
+}

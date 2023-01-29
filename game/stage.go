@@ -136,14 +136,14 @@ func (s Stage) String() string {
 			if ok, es := s.Entities.GetEntitiesByPos(Pos{X: j, Y: i}); ok {
 				if len(es) == 1 {
 					if es[0].Kind == Cargo && tile.Kind == Goal {
-						char = `✓`
+						char = PassChar
 					} else {
 						char = es[0].String()
 					}
 				} else if len(es) == 2 && (es[0].Kind == Player || es[1].Kind == Player) {
 					char = PlayerChar
 				} else if len(es) > 1 {
-					char = `?`
+					char = UnknownChar
 				}
 			} else {
 				char = tile.String()

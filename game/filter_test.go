@@ -22,7 +22,7 @@ func TestPutCG(t *testing.T) {
 		}
 		assert.Equal(t, 1, countTile)
 
-		c := strings.Count(s.String(), "✓")
+		c := strings.Count(s.String(), PassChar)
 		assert.Equal(t, 1, c)
 	})
 
@@ -38,7 +38,7 @@ func TestPutCG(t *testing.T) {
 		}
 		assert.Equal(t, 2, countTile)
 
-		c := strings.Count(s.String(), "✓")
+		c := strings.Count(s.String(), PassChar)
 		assert.Equal(t, 2, c)
 	})
 }
@@ -48,7 +48,7 @@ func TestPutWall(t *testing.T) {
 		s := NewStagePlane(4)
 		s.putWall(2)
 
-		c := strings.Count(s.String(), "#")
+		c := strings.Count(s.String(), WallChar)
 		assert.Equal(t, 2, c)
 	})
 
@@ -57,9 +57,9 @@ func TestPutWall(t *testing.T) {
 		s.putCG(2)
 		s.putWall(2)
 
-		cg := strings.Count(s.String(), "✓")
+		cg := strings.Count(s.String(), PassChar)
 		assert.Equal(t, 2, cg)
-		wc := strings.Count(s.String(), "#")
+		wc := strings.Count(s.String(), WallChar)
 		assert.Equal(t, 2, wc)
 	})
 }

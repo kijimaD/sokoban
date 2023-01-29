@@ -57,12 +57,3 @@ func uniq(poses []Pos) []Pos {
 	}
 	return uniq
 }
-
-func contains(ps []Pos, e Pos) bool {
-	for _, p := range ps {
-		if p == e {
-			return true
-		}
-	}
-	return false
-}

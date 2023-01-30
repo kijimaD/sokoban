@@ -1,5 +1,10 @@
 package game
 
+import (
+	"math/rand"
+	"time"
+)
+
 type EntityKind int
 
 const (
@@ -19,9 +24,9 @@ type Entity struct {
 	Kind  EntityKind
 }
 
-func NewEntity(pos *Pos, stage *Stage, kind EntityKind) Entity {
+func NewEntity(pos Pos, stage *Stage, kind EntityKind) Entity {
 	e := Entity{
-		Pos:   pos,
+		Pos:   &pos,
 		Stage: stage,
 		Kind:  kind,
 	}
@@ -233,4 +238,111 @@ func (e *Entity) isCollision() bool {
 		result = true
 	}
 	return result
+}
+
+func (e *Entity) PullLeft() {
+	if e.canPull(LeftD) {
+		_, targets := e.Stage.Entities.GetEntitiesByPos(Pos{X: e.Pos.X + 1, Y: e.Pos.Y})
+		for _, t := range targets {
+			if t.Kind == Cargo {
+				t.left()
+			}
+		}
+		e.left()
+	}
+}
+
+func (e *Entity) PullRight() {
+	if e.canPull(RightD) {
+		_, targets := e.Stage.Entities.GetEntitiesByPos(Pos{X: e.Pos.X - 1, Y: e.Pos.Y})
+		for _, t := range targets {
+			if t.Kind == Cargo {
+				t.right()
+			}
+		}
+		e.right()
+	}
+}
+
+func (e *Entity) PullUp() {
+	if e.canPull(UpD) {
+		_, targets := e.Stage.Entities.GetEntitiesByPos(Pos{X: e.Pos.X, Y: e.Pos.Y + 1})
+		for _, t := range targets {
+			if t.Kind == Cargo {
+				t.up()
+			}
+		}
+		e.up()
+	}
+}
+
+func (e *Entity) PullDown() {
+	if e.canPull(DownD) {
+		_, targets := e.Stage.Entities.GetEntitiesByPos(Pos{X: e.Pos.X, Y: e.Pos.Y - 1})
+		for _, t := range targets {
+			if t.Kind == Cargo {
+				t.down()
+			}
+		}
+		e.down()
+	}
+}
+
+func (e *Entity) canPull(d Direction) bool {
+	var canTile bool
+	canEntity := true
+	initialPosX := e.Pos.X
+	initialPosY := e.Pos.Y
+
+	switch d {
+	case LeftD:
+		e.left()
+		canTile = e.currentTile().Kind == Floor || e.currentTile().Kind == Goal
+		targets := e.collisionEntities()
+		if len(targets) > 0 {
+			canEntity = false
+		}
+	case RightD:
+		e.right()
+		canTile = e.currentTile().Kind == Floor || e.currentTile().Kind == Goal
+		targets := e.collisionEntities()
+		if len(targets) > 0 {
+			canEntity = false
+		}
+	case DownD:
+		e.down()
+		canTile = e.currentTile().Kind == Floor || e.currentTile().Kind == Goal
+		targets := e.collisionEntities()
+		if len(targets) > 0 {
+			canEntity = false
+		}
+	case UpD:
+		e.up()
+		canTile = e.currentTile().Kind == Floor || e.currentTile().Kind == Goal
+		targets := e.collisionEntities()
+		if len(targets) > 0 {
+			canEntity = false
+		}
+	}
+
+	e.Pos.X = initialPosX
+	e.Pos.Y = initialPosY
+	return canTile && canEntity
+}
+
+func (e *Entity) randomPull() {
+	seed := time.Now().UnixNano()
+	r := rand.New(rand.NewSource(seed))
+	i := r.Intn(4) // 0~3
+
+	switch i {
+	case 0:
+		e.PullUp()
+	case 1:
+		e.PullRight()
+	case 2:
+		e.PullDown()
+	case 3:
+		e.PullLeft()
+	}
 }

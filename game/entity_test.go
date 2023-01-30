@@ -11,7 +11,7 @@ func TestNewEntity(t *testing.T) {
 	s := Stage{}
 	k := Player
 
-	e := NewEntity(&p, &s, k)
+	e := NewEntity(p, &s, k)
 
 	assert.Equal(t, p, *e.Pos)
 	assert.Equal(t, s, *e.Stage)
@@ -56,15 +56,82 @@ func TestPlayerOver(t *testing.T) {
 func TestCollision(t *testing.T) {
 	s := InitStage()
 
-	cargo := Entity{
-		&Pos{
-			X: 1,
-			Y: 1,
-		},
-		s,
-		Cargo,
-	}
+	cargo := NewEntity(Pos{X: 1, Y: 1}, s, Cargo)
 	s.Entities = append(s.Entities, cargo)
 
 	assert.Equal(t, true, cargo.isCollision())
+}
+
+func TestPull(t *testing.T) {
+	s := InitStage()
+
+	player := s.Entities.Player()
+	player.moveRelative(1, 2)
+	player.PullDown()
+	expect := `...#
+...#
+#✓.#
+.@..
+`
+	assert.Equal(t, expect, s.String())
+
+	player.moveRelative(0, -2)
+	player.Down() // 荷物を押す
+	player.moveRelative(1, 1)
+
+	expect = `...#
+...#
+#_.#
+.&@.
+`
+	assert.Equal(t, expect, s.String())
+
+	player.PullRight()
+	expect = `...#
+...#
+#_.#
+..&@
+`
+	assert.Equal(t, expect, s.String())
+
+	player.moveRelative(-2, 0)
+	expect = `...#
+...#
+#_.#
+.@&.
+`
+	assert.Equal(t, expect, s.String())
+
+	player.PullLeft()
+	expect = `...#
+...#
+#_.#
+@&..
+`
+	assert.Equal(t, expect, s.String())
+
+	player.moveRelative(1, -1)
+	expect = `...#
+...#
+#@.#
+.&..
+`
+	assert.Equal(t, expect, s.String())
+	player.PullUp()
+	expect = `...#
+.@.#
+#✓.#
+....
+`
+	assert.Equal(t, expect, s.String())
+}
+
+func TestRandomPull(t *testing.T) {
+	s := InitBigStage()
+
+	player := s.Entities.Player()
+
+	for i := 0; i < 10; i++ {
+		player.randomPull()
+	}
 }

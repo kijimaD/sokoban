@@ -14,9 +14,11 @@ const (
 )
 
 const (
-	WallChar  = `#`
-	FloorChar = `.`
-	GoalChar  = `_`
+	WallChar    = `#`
+	FloorChar   = `.`
+	GoalChar    = `_`
+	PassChar    = `✓`
+	UnknownChar = `?`
 )
 
 func (t Tile) String() string {
@@ -27,6 +29,6 @@ func (t Tile) String() string {
 	} else if t.Kind == Goal {
 		return GoalChar
 	} else {
-		return "?"
+		return UnknownChar
 	}
 }

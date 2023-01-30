@@ -21,11 +21,13 @@ func Run() {
 @: You
 &: Cargo
 _: Goal
+#: Wall
+.: Floor
 
 `
 	fmt.Print(splash)
 
-	s := game.InitStage()
+	s := game.GenStage()
 	fmt.Println(s)
 	player := s.Entities.Player()
 

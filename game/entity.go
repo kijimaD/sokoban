@@ -330,7 +330,7 @@ func (e *Entity) canPull(d Direction) bool {
 	return canTile && canEntity
 }
 
-func (e *Entity) randomWalk() {
+func (e *Entity) randomPull() {
 	seed := time.Now().UnixNano()
 	r := rand.New(rand.NewSource(seed))
 	i := r.Intn(4) // 0~3

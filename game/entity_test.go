@@ -126,12 +126,12 @@ func TestPull(t *testing.T) {
 	assert.Equal(t, expect, s.String())
 }
 
-func TestRandomWalk(t *testing.T) {
+func TestRandomPull(t *testing.T) {
 	s := InitBigStage()
 
 	player := s.Entities.Player()
 
 	for i := 0; i < 10; i++ {
-		player.randomWalk()
+		player.randomPull()
 	}
 }

@@ -1,5 +1,10 @@
 package game
 
+import (
+	"math/rand"
+	"time"
+)
+
 type EntityKind int
 
 const (
@@ -323,4 +328,21 @@ func (e *Entity) canPull(d Direction) bool {
 	e.Pos.X = initialPosX
 	e.Pos.Y = initialPosY
 	return canTile && canEntity
+}
+
+func (e *Entity) randomWalk() {
+	seed := time.Now().UnixNano()
+	r := rand.New(rand.NewSource(seed))
+	i := r.Intn(4) // 0~3
+
+	switch i {
+	case 0:
+		e.PullUp()
+	case 1:
+		e.PullRight()
+	case 2:
+		e.PullDown()
+	case 3:
+		e.PullLeft()
+	}
 }

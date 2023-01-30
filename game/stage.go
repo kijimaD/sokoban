@@ -123,6 +123,31 @@ func InitStage() *Stage {
 	return stage
 }
 
+func InitBigStage() *Stage {
+	tiles := `...#.....
+...#.....
+#_.#.._..
+...#_...#
+...#.....
+..#......
+...#.###_
+.........
+.........
+`
+	entities := `~~~~~~~~~
+~~~~~&~~~
+~&~~~~&~~
+~~~~&~~~~
+~~~~~~~~~
+~~~~~~@~~
+~~~~~~~~&
+~~~~~~~~~
+~~~~~~~~~
+`
+	stage := NewStageByString(tiles, entities)
+	return stage
+}
+
 func (s Stage) String() string {
 	result := ""
 

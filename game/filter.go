@@ -6,6 +6,18 @@ import (
 	"time"
 )
 
+// WIP
+func GenStage() *Stage {
+	seed := time.Now().UnixNano()
+	r := rand.New(rand.NewSource(seed))
+
+	s := NewStagePlane(10)
+	s.putCG(r.Intn(2) + 4)
+	s.putWall(r.Intn(20) + 20)
+
+	return s
+}
+
 // ランダムにcargoとgoalを配置
 func (s *Stage) putCG(num int) {
 	poses := s.randomPoses(num)
@@ -41,8 +53,8 @@ func (s *Stage) randomPos() Pos {
 
 // ランダムにかぶらない座標をえらぶ
 func (s *Stage) randomPoses(n int) []Pos {
-	w := len(s.Tiles)
-	if n > w || n == 0 {
+	max := int(math.Pow(float64(len(s.Tiles)), 2))
+	if n > max || n == 0 {
 		panic("invalid n value")
 	}
 	var results []Pos

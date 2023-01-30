@@ -1,12 +1,19 @@
 package game
 
 import (
+	"fmt"
 	"reflect"
 	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
+
+// wip
+func TestGenStage(t *testing.T) {
+	s := GenStage()
+	fmt.Println(s)
+}
 
 func TestPutCG(t *testing.T) {
 	t.Run("1", func(t *testing.T) {

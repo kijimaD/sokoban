@@ -13,6 +13,7 @@ const (
 	LEFT_KEY  = "a"
 	DOWN_KEY  = "s"
 	RIGHT_KEY = "d"
+	RESET_KEY = "r"
 )
 
 func Run() {
@@ -31,10 +32,16 @@ _: Goal
 	fmt.Println(s)
 	player := s.Entities.Player()
 
+	var poses []game.Pos
+	for _, e := range s.Entities {
+		poses = append(poses, *e.Pos)
+	}
+
 	for {
 		scanner := bufio.NewScanner(os.Stdin)
 		scanner.Scan()
 		in := scanner.Text()
+		player = s.Entities.Player()
 
 		switch in {
 		case UP_KEY:
@@ -45,6 +52,8 @@ _: Goal
 			player.Down()
 		case RIGHT_KEY:
 			player.Right()
+		case RESET_KEY:
+			s.ResetPos(poses)
 		default:
 			continue
 		}

@@ -98,3 +98,41 @@ func TestIsFinish(t *testing.T) {
 	player.Down()
 	assert.Equal(t, false, s.IsFinish())
 }
+
+func TestReset(t *testing.T) {
+	s := InitStage()
+
+	var poses []Pos
+
+	for _, e := range s.Entities {
+		poses = append(poses, *e.Pos)
+	}
+
+	player := s.Entities.Player()
+	player.Right()
+
+	s.ResetPos(poses)
+	expect := `@..#
+.&.#
+#_.#
+....
+`
+	assert.Equal(t, expect, s.String())
+
+	player = s.Entities.Player()
+	player.Right()
+	expect = `.@.#
+.&.#
+#_.#
+....
+`
+	assert.Equal(t, expect, s.String())
+
+	s.ResetPos(poses)
+	expect = `@..#
+.&.#
+#_.#
+....
+`
+	assert.Equal(t, expect, s.String())
+}

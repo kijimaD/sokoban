@@ -223,3 +223,12 @@ func (s Stage) IsFinish() bool {
 	}
 	return finish
 }
+
+func (s *Stage) ResetPos(initialPoses []Pos) {
+	copyPoses := make([]Pos, len(initialPoses))
+	copy(copyPoses, initialPoses)
+
+	for i, _ := range s.Entities {
+		s.Entities[i].Pos = &copyPoses[i]
+	}
+}

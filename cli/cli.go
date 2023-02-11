@@ -30,7 +30,6 @@ _: Goal
 
 	s := game.GenStage()
 	fmt.Println(s)
-	player := s.Entities.Player()
 
 	var poses []game.Pos
 	for _, e := range s.Entities {
@@ -41,7 +40,7 @@ _: Goal
 		scanner := bufio.NewScanner(os.Stdin)
 		scanner.Scan()
 		in := scanner.Text()
-		player = s.Entities.Player()
+		player := s.Entities.Player()
 
 		switch in {
 		case UP_KEY:

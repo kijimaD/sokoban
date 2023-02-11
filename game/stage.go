@@ -228,7 +228,7 @@ func (s *Stage) ResetPos(initialPoses []Pos) {
 	copyPoses := make([]Pos, len(initialPoses))
 	copy(copyPoses, initialPoses)
 
-	for i, _ := range s.Entities {
+	for i := 0; i < len(s.Entities); i++ {
 		s.Entities[i].Pos = &copyPoses[i]
 	}
 }
